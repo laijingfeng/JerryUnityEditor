@@ -6,27 +6,36 @@ using UnityEngine;
 
 public class FindChinese : MonoBehaviour
 {
-    [MenuItem("Assets/FindChinese/ShowOneLine", false)]
-    private static void FindChinese_ShowOneLine()
+    [MenuItem("Assets/FindChinese/OneLine_NotCheck", false)]
+    private static void FindChinese_OneLine_NotCheck()
     {
-        List<string> selectPaths = GetSelectPaths();
-        if (selectPaths.Count > 0)
-        {
-            DoFindChinese(selectPaths, false);
-        }
-        else
-        {
-            Debug.Log("Select Nothing");
-        }
+        TryFind(false, false);
     }
 
-    [MenuItem("Assets/FindChinese/ShowAllLine", false)]
-    private static void FindChinese_ShowAllLine()
+    [MenuItem("Assets/FindChinese/OneLine_Check", false)]
+    private static void FindChinese_OneLine_Check()
+    {
+        TryFind(false, true);
+    }
+
+    [MenuItem("Assets/FindChinese/AllLine_NotCheck", false)]
+    private static void FindChinese_AllLine_NotCheck()
+    {
+        TryFind(true, false);
+    }
+
+    [MenuItem("Assets/FindChinese/AllLine_Check", false)]
+    private static void FindChinese_AllLine_Check()
+    {
+        TryFind(true, true);
+    }
+
+    private static void TryFind(bool showAllLine = false, bool checkMark = false)
     {
         List<string> selectPaths = GetSelectPaths();
         if (selectPaths.Count > 0)
         {
-            DoFindChinese(selectPaths, true);
+            DoFindChinese(selectPaths, showAllLine, checkMark);
         }
         else
         {
@@ -50,7 +59,7 @@ public class FindChinese : MonoBehaviour
         return selectPaths;
     }
 
-    private static void DoFindChinese(List<string> paths, bool showAllLine)
+    private static void DoFindChinese(List<string> paths, bool showAllLine = false, bool checkMark = false)
     {
         Debug.Log("Finding");
 
@@ -58,6 +67,7 @@ public class FindChinese : MonoBehaviour
 
         int cnt = 0;
         Regex r = new Regex(@"^((?!/).)+"".*?[\u4e00-\u9fa5]+.*?""");
+        Regex r2 = new Regex(@"""(.*?[\u4e00-\u9fa5]+.*?)""");
         for (int i = 0; i < files.Count; i++)
         {
             string[] contents = File.ReadAllLines(files[i]);
@@ -65,6 +75,15 @@ public class FindChinese : MonoBehaviour
             {
                 if (r.IsMatch(contents[j]))
                 {
+                    bool isContainMark = contents[j].Trim().Contains("UIHelper.TranslateTest");
+                    if (checkMark && isContainMark)
+                    {
+                        continue;
+                    }
+                    Match m = r2.Match(contents[j]);
+                    Debug.LogWarningFormat("<color={0}>{1}</color>\n{2}\t{3}",
+                        isContainMark ? "yellow" : "red", contents[j].Trim(),
+                        m.Groups[1].Value, Path.GetFileName(files[i]));
                     cnt++;
                     Debug.LogFormat(AssetDatabase.LoadMainAssetAtPath(EditorUtil.PathAbsolute2Assets(files[i])), "<color=yellow>{0}</color> Line.{1}", Path.GetFileName(files[i]), j + 1);
                     if (!showAllLine)
