@@ -1,8 +1,8 @@
-﻿using UnityEngine;
-using UnityEditor;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
+using UnityEditor;
+using UnityEngine;
 
 public class FindChinese : MonoBehaviour
 {
