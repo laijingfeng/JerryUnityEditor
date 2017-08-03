@@ -9,7 +9,7 @@ public class RefFinder : EditorWindow
     private static void Open()
     {
         RefFinder win = GetWindow<RefFinder>();
-        win.SetFinder();
+        win.DoReset();
     }
 
     #region Commom
@@ -20,8 +20,11 @@ public class RefFinder : EditorWindow
     private int toolbarIdx = 0;
     private List<Finder_Base> finderList = new List<Finder_Base>();
 
-    private void SetFinder()
+    private void DoReset()
     {
+        ResetPathFind();
+        ResetObjectFind();
+
         finderList.Clear();
         finderList.Add(new Finder_Sprite());
     }
@@ -29,6 +32,12 @@ public class RefFinder : EditorWindow
     void OnGUI()
     {
         EditorGUILayout.BeginVertical();
+
+        if (GUILayout.Button(new GUIContent() { text = "Reset", tooltip = "如果异常了，可尝试重置" }))
+        {
+            DoReset();
+        }
+
         findObject = EditorGUILayout.ObjectField("查找对象", findObject, typeof(Object), true);
 
         toolbarIdx = GUILayout.Toolbar(toolbarIdx, toolbarTexts);
@@ -89,6 +98,13 @@ public class RefFinder : EditorWindow
     private MessageType pathFindTipType = MessageType.Info;
     private Finder_Base pathFinder = null;
 
+    private void ResetPathFind()
+    {
+        pathFindTip = "设定对象和目录，进行引用查找";
+        pathFindTipType = MessageType.Info;
+        pathFinder = null;
+    }
+
     private void DrawPathFind()
     {
         pathRect = EditorGUILayout.GetControlRect();
@@ -97,7 +113,7 @@ public class RefFinder : EditorWindow
             pathRect.Contains(Event.current.mousePosition))
         {
             DragAndDrop.visualMode = DragAndDropVisualMode.Generic;
-            if (DragAndDrop.paths != null 
+            if (DragAndDrop.paths != null
                 && DragAndDrop.paths.Length > 0
                 && Directory.Exists(DragAndDrop.paths[0]))
             {
@@ -173,6 +189,13 @@ public class RefFinder : EditorWindow
     private string objectFindTip = "设定对象和目标，进行引用查找";
     private MessageType objectFindTipType = MessageType.Info;
     private Finder_Base objectFinder = null;
+
+    private void ResetObjectFind()
+    {
+        objectFindTip = "设定对象和目标，进行引用查找";
+        objectFindTipType = MessageType.Info;
+        objectFinder = null;
+    }
 
     private void DrawObjectFind()
     {
