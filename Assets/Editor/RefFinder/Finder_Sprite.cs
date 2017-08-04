@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEditor;
@@ -10,6 +11,15 @@ public class Finder_Sprite : Finder_Base
     public override bool Match(System.Type type)
     {
         return type == typeof(UnityEngine.Sprite);
+    }
+
+    protected override List<AssetType> MyCarrierList()
+    {
+        return new List<AssetType>()
+        {
+            AssetType.Scene,
+            AssetType.GameObject,
+        };
     }
 
     public override void PathFind(UnityEngine.Object findObject, string findPath)
@@ -28,17 +38,17 @@ public class Finder_Sprite : Finder_Base
         }
         else
         {
-            SetTip("查找异常", MessageType.Error, true);
+            SetTip("查找异常", MessageType.Error, RefFinder.FindFromType.FromPath);
             return;
         }
 
         string findPathAbs = Application.dataPath + "/../" + findPath;
         string[] files = Directory.GetFiles(findPathAbs, "*.*", SearchOption.AllDirectories)
-            .Where(s => Path.GetExtension(s).ToLower().Equals(".prefab")).ToArray();
+            .Where(s => IsMyCarrier(s)).ToArray();
 
         if (files == null || files.Length <= 0)
         {
-            SetTip("查找目录没有对象的载体(Prefab)", MessageType.Warning, true);
+            SetTip("查找目录没有对象的载体(Prefab)", MessageType.Warning, RefFinder.FindFromType.FromPath);
             return;
         }
 
@@ -51,38 +61,124 @@ public class Finder_Sprite : Finder_Base
             }
         }
 
-        SetTip(string.Format("查找结果如下({0}):", pathFindResults.Count), MessageType.Info, true);
+        SetTip(string.Format("查找结果如下({0}):", pathFindResults.Count), MessageType.Info, RefFinder.FindFromType.FromPath);
+    }
+
+    public override void DrawPathFind()
+    {
+        if (pathFindResults.Count > 0)
+        {
+            EditorGUILayout.BeginVertical();
+            foreach (Object obj in pathFindResults)
+            {
+                EditorGUILayout.ObjectField(obj, typeof(Object), true);
+            }
+            EditorGUILayout.EndVertical();
+        }
     }
 
     public override void ObjectFind(Object findObject, Object objectTarget)
     {
         objectFindResults.Clear();
-
-        if (objectTarget.GetType() != typeof(UnityEngine.GameObject))
+        AssetType type = Object2Type(objectTarget);
+        if (!IsMyCarrier(type))
         {
-            SetTip("目标对象不是查找对象的载体(GameObject)", MessageType.Warning,false);
+            SetTip(string.Format("目标对象不是查找对象的载体({0})", MyCarrierListStr()), MessageType.Warning, RefFinder.FindFromType.FromObject);
             return;
         }
 
-        GameObject objectTargetGo = objectTarget as GameObject;
-        Image[] imgs = objectTargetGo.GetComponentsInChildren<Image>(true);
+        switch (type)
+        {
+            case AssetType.GameObject:
+                {
+                    GameObject objectTargetGo = objectTarget as GameObject;
+                    Image[] imgs = objectTargetGo.GetComponentsInChildren<Image>(true);
+
+                    string findObjectPath = AssetDatabase.GetAssetPath(findObject);
+                    string findObjectGuid = AssetDatabase.AssetPathToGUID(findObjectPath);
+                    string spriteName = findObject.name;
+
+                    foreach (Image im in imgs)
+                    {
+                        if (im == null || im.sprite == null || im.sprite.name.Equals(spriteName) == false)
+                        {
+                            continue;
+                        }
+                        if (AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(im.sprite)).Equals(findObjectGuid))
+                        {
+                            objectFindResults.Add(im);
+                        }
+                    }
+
+                    SetTip(string.Format("查找结果如下({0}):", objectFindResults.Count), MessageType.Info, RefFinder.FindFromType.FromObject);
+                }
+                break;
+            case AssetType.Scene:
+                {
+                    SetTip("Scene不支持查找详情", MessageType.Info, RefFinder.FindFromType.FromObject);
+                }
+                break;
+        }
+    }
+
+    public override void DrawObjectFind()
+    {
+        if (objectFindResults.Count > 0)
+        {
+            EditorGUILayout.BeginVertical();
+            foreach (Object obj in objectFindResults)
+            {
+                EditorGUILayout.ObjectField(obj, typeof(Object), true);
+            }
+            EditorGUILayout.EndVertical();
+        }
+    }
+
+    public override void CurSceneFind(Object findObject)
+    {
+        curSceneFindResults.Clear();
+
+        GameObject[] gos = HierarchyNodeHelper.FindObjectsOfType<GameObject>();
 
         string findObjectPath = AssetDatabase.GetAssetPath(findObject);
         string findObjectGuid = AssetDatabase.AssetPathToGUID(findObjectPath);
         string spriteName = findObject.name;
 
-        foreach (Image im in imgs)
+        foreach (GameObject go in gos)
         {
-            if (im == null || im.sprite == null || im.sprite.name.Equals(spriteName) == false)
+            //只要跟结点
+            if (go.transform.parent != null)
             {
                 continue;
             }
-            if (AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(im.sprite)).Equals(findObjectGuid))
+            Image[] imgs = go.GetComponentsInChildren<Image>(true);
+
+            foreach (Image im in imgs)
             {
-                objectFindResults.Add(im);
+                if (im == null || im.sprite == null || im.sprite.name.Equals(spriteName) == false)
+                {
+                    continue;
+                }
+                if (AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(im.sprite)).Equals(findObjectGuid))
+                {
+                    curSceneFindResults.Add(im);
+                }
             }
         }
 
-        SetTip(string.Format("查找结果如下({0}):", objectFindResults.Count), MessageType.Info, false);
+        SetTip(string.Format("查找结果如下({0}):", curSceneFindResults.Count), MessageType.Info, RefFinder.FindFromType.FromCurScene);
+    }
+
+    public override void DrawCurSceneFind()
+    {
+        if (curSceneFindResults.Count > 0)
+        {
+            EditorGUILayout.BeginVertical();
+            foreach (Object obj in curSceneFindResults)
+            {
+                EditorGUILayout.ObjectField(obj, typeof(Object), true);
+            }
+            EditorGUILayout.EndVertical();
+        }
     }
 }
