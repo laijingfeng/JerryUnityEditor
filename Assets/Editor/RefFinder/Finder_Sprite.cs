@@ -46,19 +46,16 @@ public class Finder_Sprite : Finder_Base
         string[] files = Directory.GetFiles(findPathAbs, "*.*", SearchOption.AllDirectories)
             .Where(s => IsMyCarrier(s)).ToArray();
 
-        if (files == null || files.Length <= 0)
+        if (files != null && files.Length > 0)
         {
-            SetTip("查找目录没有对象的载体(Prefab)", MessageType.Warning, RefFinder.FindFromType.FromPath);
-            return;
-        }
-
-        string findObjectGuid = AssetDatabase.AssetPathToGUID(findObjectPath);
-        foreach (string f in files)
-        {
-            if (Regex.IsMatch(File.ReadAllText(f), @"m_Sprite: {fileID: " + spriteID + ", guid: " + findObjectGuid + ", type: 3}"))
+            string findObjectGuid = AssetDatabase.AssetPathToGUID(findObjectPath);
+            foreach (string f in files)
             {
-                pathFindResults.Add(AssetDatabase.LoadMainAssetAtPath(GetRelativeAssetsPath(f)));
-            }
+                if (Regex.IsMatch(File.ReadAllText(f), @"m_Sprite: {fileID: " + spriteID + ", guid: " + findObjectGuid + ", type: 3}"))
+                {
+                    pathFindResults.Add(AssetDatabase.LoadMainAssetAtPath(GetRelativeAssetsPath(f)));
+                }
+            }    
         }
 
         SetTip(string.Format("查找结果如下({0}):", pathFindResults.Count), MessageType.Info, RefFinder.FindFromType.FromPath);
@@ -115,7 +112,7 @@ public class Finder_Sprite : Finder_Base
                 break;
             case AssetType.Scene:
                 {
-                    SetTip("Scene不支持查找详情", MessageType.Info, RefFinder.FindFromType.FromObject);
+                    SetTip("Scene不支持查找详情，可以打开，再用FromCurScene查找", MessageType.Info, RefFinder.FindFromType.FromObject);
                 }
                 break;
         }

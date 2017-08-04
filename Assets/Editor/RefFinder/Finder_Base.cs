@@ -36,7 +36,7 @@ public abstract class Finder_Base
 
     #region CurSceneFind
 
-    public string curSceneFindTip = "在当前场景显示对象中查找";
+    public string curSceneFindTip = "在当前场景显示对象中，进行引用查找";
     public MessageType curSceneFindTipType = MessageType.Info;
     protected List<Object> curSceneFindResults = new List<Object>();
 

@@ -342,7 +342,7 @@ public class RefFinder : EditorWindow
     private void ResetCurSceneFind()
     {
         curSceneFindSet.finder = null;
-        curSceneFindSet.findTip = "在当前场景显示对象中查找";
+        curSceneFindSet.findTip = "在当前场景显示对象中，进行引用查找";
         curSceneFindSet.findTipType = MessageType.Info;
     }
 
