@@ -137,8 +137,8 @@ public class Finder_Sprite : Finder_Base
     public override void CurSceneFind(Object findObject)
     {
         curSceneFindResults.Clear();
-
-        GameObject[] gos = HierarchyNodeHelper.FindObjectsOfType<GameObject>();
+        
+        GameObject[] gos = Editor.FindObjectsOfType<GameObject>();
 
         string findObjectPath = AssetDatabase.GetAssetPath(findObject);
         string findObjectGuid = AssetDatabase.AssetPathToGUID(findObjectPath);
