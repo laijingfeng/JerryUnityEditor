@@ -37,7 +37,13 @@ public class EditorUtil
         return path;
     }
 
-    public static List<string> GetFiles(List<string> paths, string searchPattern)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="paths"></param>
+    /// <param name="searchPattern">例如:*.cs</param>
+    /// <returns></returns>
+    public static List<string> GetFiles(List<string> paths, string searchPattern = "*.*")
     {
         List<string> filePath = new List<string>();
 
