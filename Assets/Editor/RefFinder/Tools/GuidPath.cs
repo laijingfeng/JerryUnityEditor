@@ -4,26 +4,14 @@ using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
-public class SpritePath : FinderToolBasePath
+/// <summary>
+/// 通用，GUID查找
+/// </summary>
+public class GuidPath : FinderToolBasePath
 {
     protected override void WorkPath(Object findObject, string findPath)
     {
         string findObjectPath = AssetDatabase.GetAssetPath(findObject);
-        string spriteName = findObject.name;
-        string spriteID = "";
-
-        Match mt = Regex.Match(File.ReadAllText(findObjectPath + ".meta"), @"(\d+): " + spriteName, RegexOptions.Singleline);
-        if (mt != null)
-        {
-            spriteID = mt.Value;
-            spriteID = spriteID.Split(':')[0];
-        }
-        else
-        {
-            SetTip("查找异常", MessageType.Error);
-            return;
-        }
-
         string findPathAbs = Application.dataPath + "/../" + findPath;
         string[] files = Directory.GetFiles(findPathAbs, "*.*", SearchOption.AllDirectories)
             .Where(s => IsMyCarrier(s)).ToArray();
@@ -37,7 +25,7 @@ public class SpritePath : FinderToolBasePath
             {
                 string file = files[startIndex];
                 bool isCancel = EditorUtility.DisplayCancelableProgressBar("匹配资源中", file, (float)startIndex / (float)files.Length);
-                if (Regex.IsMatch(File.ReadAllText(file), @"m_Sprite: {fileID: " + spriteID + ", guid: " + findObjectGuid + ", type: 3}"))
+                if (Regex.IsMatch(File.ReadAllText(file), findObjectGuid))
                 {
                     results.Add(AssetDatabase.LoadMainAssetAtPath(GetRelativeAssetsPath(file)));
                 }

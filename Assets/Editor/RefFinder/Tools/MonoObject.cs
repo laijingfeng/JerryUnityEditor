@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class SpriteObject : FinderToolBaseObject
+public class MonoObject : FinderToolBaseObject
 {
     protected override void WorkObject(Object findObject, Object objectTarget)
     {
@@ -32,21 +31,15 @@ public class SpriteObject : FinderToolBaseObject
 
     public static List<Object> DoOneGameObject(Object findObject, GameObject targetGo)
     {
-        string findObjectPath = AssetDatabase.GetAssetPath(findObject);
-        string findObjectGuid = AssetDatabase.AssetPathToGUID(findObjectPath);
-        string spriteName = findObject.name;
-        Image[] imgs = targetGo.GetComponentsInChildren<Image>(true);
+        string findObjectType = findObject.name.ToString();
+        Component[] coms = targetGo.GetComponentsInChildren<Component>(true);
         List<Object> ret = new List<Object>();
 
-        foreach (Image im in imgs)
+        foreach (Component com in coms)
         {
-            if (im == null || im.sprite == null || im.sprite.name.Equals(spriteName) == false)
+            if (com.GetType().ToString().Equals(findObjectType))
             {
-                continue;
-            }
-            if (AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(im.sprite)).Equals(findObjectGuid))
-            {
-                ret.Add(im);
+                ret.Add(com);
             }
         }
 

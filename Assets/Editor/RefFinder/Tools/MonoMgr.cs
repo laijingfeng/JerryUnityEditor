@@ -9,17 +9,17 @@ public class MonoMgr : FinderToolMgrBase
 
     protected override FinderToolBase GetToolPath()
     {
-        return null;
+        return new GuidPath();
     }
 
     protected override FinderToolBase GetToolObject()
     {
-        return null;
+        return new MonoObject();
     }
 
     protected override FinderToolBase GetToolCurScene()
     {
-        return null;
+        return new MonoCurScene();
     }
 
     protected override List<AssetType> MyCarrierList()
