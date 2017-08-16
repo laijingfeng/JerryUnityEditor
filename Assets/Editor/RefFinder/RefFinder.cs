@@ -23,6 +23,7 @@ public class RefFinder : EditorWindow
     {
         new SpriteMgr(),
         new MonoMgr(),
+        new TextureMgr(),
     };
 
     void OnGUI()

@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class SpriteObject : FinderToolBaseObject
 {
-    protected override void WorkObject(Object findObject, Object objectTarget)
+    protected override void WorkObject(Object findObject, Object targetObject)
     {
-        FinderToolMgrBase.AssetType type = FinderToolMgrBase.Object2Type(objectTarget);
+        FinderToolMgrBase.AssetType type = FinderToolMgrBase.Object2Type(targetObject);
         if (!IsMyCarrier(type))
         {
             SetTip(string.Format("目标对象不是查找对象的载体({0})", MyCarrierListStr()), MessageType.Warning);
@@ -18,7 +18,7 @@ public class SpriteObject : FinderToolBaseObject
         {
             case FinderToolMgrBase.AssetType.GameObject:
                 {
-                    results.AddRange(DoOneGameObject(findObject, objectTarget as GameObject));
+                    results.AddRange(DoOneGameObject(findObject, targetObject as GameObject));
                     SetTip(string.Format("查找结果如下({0}):", results.Count), MessageType.Info);
                 }
                 break;

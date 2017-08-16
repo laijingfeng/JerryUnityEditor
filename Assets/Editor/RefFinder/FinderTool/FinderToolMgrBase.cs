@@ -105,6 +105,11 @@ public abstract class FinderToolMgrBase
                             type = AssetType.Scene;
                         }
                         break;
+                    case ".mat":
+                        {
+                            type = AssetType.Material;
+                        }
+                        break;
                 }
             }
         }
@@ -128,6 +133,10 @@ public abstract class FinderToolMgrBase
             {
                 type = AssetType.Sprite;
             }
+            else if (obj.GetType() == typeof(UnityEngine.Material))
+            {
+                type = AssetType.Material;
+            }
         }
         return type;
     }
@@ -138,5 +147,6 @@ public abstract class FinderToolMgrBase
         Scene,
         GameObject,
         Sprite,
+        Material,
     }
 }

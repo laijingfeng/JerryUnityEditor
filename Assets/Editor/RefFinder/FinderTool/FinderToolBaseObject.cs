@@ -14,7 +14,7 @@ public abstract class FinderToolBaseObject : FinderToolBase
         WorkObject((Object)param[0], (Object)param[1]);
     }
 
-    protected abstract void WorkObject(Object findObject, Object objectTarget);
+    protected abstract void WorkObject(Object findObject, Object targetObject);
 
     protected bool IsMyCarrier(Object obj)
     {
