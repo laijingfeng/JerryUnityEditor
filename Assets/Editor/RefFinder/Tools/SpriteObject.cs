@@ -19,15 +19,16 @@ public class SpriteObject : FinderToolBaseObject
             case FinderToolMgrBase.AssetType.GameObject:
                 {
                     results.AddRange(DoOneGameObject(findObject, targetObject as GameObject));
-                    SetTip(string.Format("查找结果如下({0}):", results.Count), MessageType.Info);
+
                 }
                 break;
-            case FinderToolMgrBase.AssetType.Scene:
+            default:
                 {
-                    SetTip("Scene不支持查找详情，可以打开，再用FromCurScene查找", MessageType.Info);
+                    results.AddRange(DoOneObjectByGUID(findObject, targetObject));
                 }
                 break;
         }
+        SetTip(string.Format("查找结果如下({0}):", results.Count), MessageType.Info);
     }
 
     public static List<Object> DoOneGameObject(Object findObject, GameObject targetGo)

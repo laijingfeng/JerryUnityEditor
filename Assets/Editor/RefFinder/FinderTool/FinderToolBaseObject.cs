@@ -1,5 +1,7 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Text.RegularExpressions;
+using UnityEditor;
 
 public abstract class FinderToolBaseObject : FinderToolBase
 {
@@ -11,13 +13,26 @@ public abstract class FinderToolBaseObject : FinderToolBase
             SetTip("内部参数错误", MessageType.Error);
             return;
         }
-        WorkObject((Object)param[0], (Object)param[1]);
+        WorkObject((UnityEngine.Object)param[0], (UnityEngine.Object)param[1]);
     }
 
-    protected abstract void WorkObject(Object findObject, Object targetObject);
+    protected abstract void WorkObject(UnityEngine.Object findObject, UnityEngine.Object targetObject);
 
-    protected bool IsMyCarrier(Object obj)
+    protected bool IsMyCarrier(UnityEngine.Object obj)
     {
         return IsMyCarrier(FinderToolMgrBase.Object2Type(obj));
+    }
+
+    protected List<UnityEngine.Object> DoOneObjectByGUID(UnityEngine.Object findObject, UnityEngine.Object targetObject)
+    {
+        List<UnityEngine.Object> ret = new List<UnityEngine.Object>();
+        string findObjectPath = AssetDatabase.GetAssetPath(findObject);
+        string findObjectGuid = AssetDatabase.AssetPathToGUID(findObjectPath);
+        string targetObjectPath = AssetDatabase.GetAssetPath(targetObject);
+        if (Regex.IsMatch(File.ReadAllText(targetObjectPath), findObjectGuid))
+        {
+            ret.Add(targetObject);
+        }
+        return ret;
     }
 }

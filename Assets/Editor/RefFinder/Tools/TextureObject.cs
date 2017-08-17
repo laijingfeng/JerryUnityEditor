@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,26 +14,21 @@ public class TextureObject : FinderToolBaseObject
             return;
         }
 
-        results.AddRange(DoOneObjectGuid(findObject, targetObject));
+        switch (type)
+        {
+            case FinderToolMgrBase.AssetType.GameObject:
+                {
+                    results.AddRange(DoOneGameObject(findObject, targetObject as GameObject));
+                }
+                break;
+            default:
+                {
+                    results.AddRange(DoOneObjectByGUID(findObject, targetObject));
+                }
+                break;
+        }
+
         SetTip(string.Format("查找结果如下({0}):", results.Count), MessageType.Info);
-    }
-
-    public static List<Object> DoOneObjectGuid(Object findObject, Object targetObject)
-    {
-        if (targetObject is GameObject)
-        {
-            return DoOneGameObject(findObject, targetObject as GameObject);
-        }
-
-        List<Object> ret = new List<Object>();
-        string findObjectPath = AssetDatabase.GetAssetPath(findObject);
-        string findObjectGuid = AssetDatabase.AssetPathToGUID(findObjectPath);
-        string targetObjectPath = AssetDatabase.GetAssetPath(targetObject);
-        if (Regex.IsMatch(File.ReadAllText(targetObjectPath), findObjectGuid))
-        {
-            ret.Add(targetObject);
-        }
-        return ret;
     }
 
     public static List<Object> DoOneGameObject(Object findObject, GameObject targetGo)
