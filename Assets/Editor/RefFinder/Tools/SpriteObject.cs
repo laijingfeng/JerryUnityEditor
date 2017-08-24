@@ -19,7 +19,6 @@ public class SpriteObject : FinderToolBaseObject
             case FinderToolMgrBase.AssetType.GameObject:
                 {
                     results.AddRange(DoOneGameObject(findObject, targetObject as GameObject));
-
                 }
                 break;
             default:

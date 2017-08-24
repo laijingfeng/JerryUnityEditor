@@ -47,10 +47,10 @@ public class SpritePath : FinderToolBasePath
                     EditorUtility.ClearProgressBar();
                     EditorApplication.update = null;
                     startIndex = 0;
+                    SetTip(string.Format("查找结果如下({0}):", results.Count), MessageType.Info);
                 }
             };
+            SetTip(string.Format("查找结果如下({0}):", results.Count), MessageType.Info);
         }
-
-        SetTip(string.Format("查找结果如下({0}):", results.Count), MessageType.Info);
     }
 }
