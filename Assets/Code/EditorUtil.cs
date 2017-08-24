@@ -3,6 +3,8 @@ using System.IO;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
+//version: 2017-08-24 21:05:36
+
 public class EditorUtil
 {
     public static string Vector3String(Vector3 v)
@@ -10,9 +12,14 @@ public class EditorUtil
         return string.Format("({0},{1},{2})", v.x, v.y, v.z);
     }
 
-    public static string PathAbsolute2Assets(string path)
+    public static string PathAbsolute2Assets(string absPath)
     {
-        return "Assets" + Path.GetFullPath(path).Replace(Path.GetFullPath(Application.dataPath), "").Replace('\\', '/');
+        return "Assets" + Path.GetFullPath(absPath).Replace(Path.GetFullPath(Application.dataPath), "").Replace('\\', '/');
+    }
+
+    public static string PathAssets2Absolute(string assetPath)
+    {
+        return Application.dataPath + "/../" + assetPath;
     }
 
     public static string GetHierarchyPath(Transform tf)
