@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using System.Text.RegularExpressions;
 
 public class ResFinder : EditorWindow
 {
@@ -35,8 +36,9 @@ public class ResFinder : EditorWindow
     private string tip = "设置条件，进行查找";
     private bool working = false;
     private List<string> workingPath = new List<string>();
+    private bool useRegularExpression = false;
 
-    [MenuItem("Window/ResFinder")]
+    [MenuItem("JerryWins/ResFinder")]
     private static void Open()
     {
         GetWindow<ResFinder>();
@@ -61,8 +63,14 @@ public class ResFinder : EditorWindow
             }
         }
 
-        withName = EditorGUILayout.TextField(new GUIContent("过滤名字", "忽略大小写，支持逻辑运算符"), withName);
-        EditorGUILayout.HelpBox("&:与\n|:或\n!:非\n_name0&(!hi|cc)\n(名称含_name0)且((名称不含hi)或(名称含cc))", MessageType.Info, true);
+        withName = EditorGUILayout.TextField(new GUIContent("过滤名字", "支持正则和逻辑运算符"), withName);
+        EditorGUILayout.BeginHorizontal();
+        useRegularExpression = EditorGUILayout.ToggleLeft(new GUIContent("正则", "是否使用正则表达式"), useRegularExpression, GUILayout.MaxWidth(50));
+        if (!useRegularExpression)
+        {
+            EditorGUILayout.HelpBox("&:与\n|:或\n!:非\n_name0&(!hi|cc)\n(名称含_name0)且((名称不含hi)或(名称含cc))", MessageType.Info, true);
+        }
+        EditorGUILayout.EndHorizontal();
         withBundle = EditorGUILayout.TextField(new GUIContent("过滤Bundle", "忽略大小写"), withBundle);
         withPostfix = EditorGUILayout.TextField(new GUIContent("过滤后缀", "忽略大小写"), withPostfix);
 
@@ -183,12 +191,12 @@ public class ResFinder : EditorWindow
         if (!string.IsNullOrEmpty(withPostfix))
         {
             string extenName = Path.GetExtension(path).ToLower();
-            if (!extenName.Equals("." + withPostfix.ToLower()))
+            if (!extenName.Equals("." + withPostfix2.ToLower()))
             {
                 return false;
             }
         }
-        if (!string.IsNullOrEmpty(withBundle))
+        if (!string.IsNullOrEmpty(withBundle2))
         {
             string assetPath = EditorUtil.PathAbsolute2Assets(path);
             AssetImporter importer = AssetImporter.GetAtPath(assetPath);
@@ -197,10 +205,17 @@ public class ResFinder : EditorWindow
                 return false;
             }
         }
-        if (!string.IsNullOrEmpty(withName))
+        if (!string.IsNullOrEmpty(withName2))
         {
-            string fileName = Path.GetFileNameWithoutExtension(path).ToLower();
-            return StringLogicJudge.Judge(fileName, withName.ToLower());
+            string fileName = Path.GetFileNameWithoutExtension(path);
+            if (useRegularExpression)
+            {
+                return Regex.IsMatch(fileName, @withName2);
+            }
+            else
+            {
+                return StringLogicJudge.Judge(fileName.ToLower(), withName2.ToLower());
+            }
         }
         return true;
     }
