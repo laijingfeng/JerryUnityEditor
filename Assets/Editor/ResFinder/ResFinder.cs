@@ -36,7 +36,7 @@ public class ResFinder : EditorWindow
 
     void OnGUI()
     {
-        EditorGUILayout.BeginVertical();
+        EditorGUILayout.BeginVertical(GUILayout.MinHeight(300));
         EditorGUILayout.BeginVertical("box");
 
         pathRect = EditorGUILayout.GetControlRect();
@@ -71,6 +71,10 @@ public class ResFinder : EditorWindow
 
         if (results.Count > 0)
         {
+            if (GUILayout.Button(new GUIContent("选中查找结果", "点击选中查找的结果")))
+            {
+                Selection.objects = results.ToArray();
+            }
             foreach (Object obj in results)
             {
                 EditorGUILayout.ObjectField(obj, typeof(Object), true);
