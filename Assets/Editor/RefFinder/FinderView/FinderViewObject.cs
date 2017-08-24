@@ -14,7 +14,7 @@ public class FinderViewObject : FinderViewBase
 
     protected override void ChildDraw()
     {
-        objectTarget = EditorGUILayout.ObjectField("目标对象", objectTarget, typeof(Object), true);
+        objectTarget = EditorGUILayout.ObjectField(new GUIContent("目标对象", "拖拽或选择目标对象到这里"), objectTarget, typeof(Object), true);
     }
 
     protected override bool Work()

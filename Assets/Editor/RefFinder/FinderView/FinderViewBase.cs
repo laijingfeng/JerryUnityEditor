@@ -80,4 +80,24 @@ public abstract class FinderViewBase
         FromObject,
         FromCurScene,
     }
+
+    static public string FindFromType2Tip(FindFromType type)
+    {
+        switch (type)
+        {
+            case FindFromType.FromPath:
+                {
+                    return "在指定的目录中查找";
+                }
+            case FindFromType.FromObject:
+                {
+                    return "在指定的对象中查找";
+                }
+            case FindFromType.FromCurScene:
+                {
+                    return "在当前场景中查找";
+                }
+        }
+        return "";
+    }
 }

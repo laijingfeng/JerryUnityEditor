@@ -17,7 +17,7 @@ public class FinderViewPath : FinderViewBase
     protected override void ChildDraw()
     {
         pathRect = EditorGUILayout.GetControlRect();
-        findPath = EditorGUI.TextField(pathRect, "查找目录", findPath);
+        findPath = EditorGUI.TextField(pathRect, new GUIContent("查找目录", "拖拽需要的目录到这里即可"), findPath);
         if ((Event.current.type == EventType.dragUpdated || Event.current.type == EventType.DragExited) &&
             pathRect.Contains(Event.current.mousePosition))
         {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RefFinder : EditorWindow
 {
-    [MenuItem("Window/RefFinder")]
+    [MenuItem("JerryWins/RefFinder")]
     private static void Open()
     {
         GetWindow<RefFinder>();
@@ -31,11 +31,11 @@ public class RefFinder : EditorWindow
         EditorGUILayout.BeginVertical();
 
         EditorGUILayout.BeginVertical("box", GUILayout.MinHeight(300));
-        findObject = EditorGUILayout.ObjectField("查找对象", findObject, typeof(Object), true);
-        List<string> viewNames = new List<string>();
+        findObject = EditorGUILayout.ObjectField(new GUIContent("查找对象", "拖拽或选择查找对象到这里"), findObject, typeof(Object), true);
+        List<GUIContent> viewNames = new List<GUIContent>();
         foreach (FinderViewBase view in finderViewList)
         {
-            viewNames.Add(view.FromType.ToString());
+            viewNames.Add(new GUIContent(view.FromType.ToString(), FinderViewBase.FindFromType2Tip(view.FromType)));
         }
         toolbarIdx = GUILayout.Toolbar(toolbarIdx, viewNames.ToArray());
         foreach (FinderViewBase view in finderViewList)
