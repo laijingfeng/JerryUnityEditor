@@ -10,18 +10,13 @@ public class SpritePath : FinderToolBasePath
     {
         string findObjectPath = AssetDatabase.GetAssetPath(findObject);
         string spriteName = findObject.name;
-        string spriteID = "";
+        string spriteID = "21300000";//单张图的时候，id是这个，但是没有记录
 
         Match mt = Regex.Match(File.ReadAllText(findObjectPath + ".meta"), @"(\d+): " + spriteName, RegexOptions.Singleline);
-        if (mt != null)
+        if (mt != null && !string.IsNullOrEmpty(mt.Value))
         {
             spriteID = mt.Value;
             spriteID = spriteID.Split(':')[0];
-        }
-        else
-        {
-            SetTip("查找异常", MessageType.Error);
-            return;
         }
 
         string findPathAbs = Application.dataPath + "/../" + findPath;
