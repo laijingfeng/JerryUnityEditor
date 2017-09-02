@@ -3,7 +3,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-//version: 2017-08-24 21:05:36
+//version: 2017-09-02 08:26:04
 
 public class EditorUtil
 {
@@ -20,6 +20,11 @@ public class EditorUtil
     public static string PathAssets2Absolute(string assetPath)
     {
         return Application.dataPath + "/../" + assetPath;
+    }
+
+    public static string PathAssets2Absolute2(string assetPath)
+    {
+        return Application.dataPath.Replace("/Assets", "") + "/" + assetPath;
     }
 
     public static string GetHierarchyPath(Transform tf)
