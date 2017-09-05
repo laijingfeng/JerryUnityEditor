@@ -16,12 +16,12 @@ public class FinderViewPath : FinderViewBase
         : base()
     {
         fromType = FindFromType.FromPath;
-        tip = "设定对象和目录，进行引用查找";
+        tip = "设定对象和目录，进行引用查找，新的对象不为空的时候，将进行替换";
     }
 
     protected override void ChildDraw()
     {
-        newObject = EditorGUILayout.ObjectField(new GUIContent("新的对象", "拖拽或选择查找对象到这里"), newObject, typeof(Object), true);
+        newObject = EditorGUILayout.ObjectField(new GUIContent("新的对象", "拖拽或选择新的对象到这里，用来替换查找对象"), newObject, typeof(Object), true);
 
         pathRect = EditorGUILayout.GetControlRect();
         findPath = EditorGUI.TextField(pathRect, new GUIContent("查找目录", "拖拽需要的目录到这里即可"), findPath);

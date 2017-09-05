@@ -43,6 +43,8 @@ public class SpritePath : FinderToolBasePath
         string[] files = Directory.GetFiles(findPathAbs, "*.*", SearchOption.AllDirectories)
             .Where(s => IsMyCarrier(s)).ToArray();
 
+        bool hasDoReplace = false;
+
         if (files != null && files.Length > 0)
         {
             int startIndex = 0;
@@ -61,6 +63,7 @@ public class SpritePath : FinderToolBasePath
                         string newFile = File.ReadAllText(file)
                             .Replace(@"m_Sprite: {fileID: " + spriteID + ", guid: " + findObjectGuid + ", type: 3}", @"m_Sprite: {fileID: " + newSpriteID + ", guid: " + newObjectGuid + ", type: 3}");
                         File.WriteAllText(file, newFile);
+                        hasDoReplace = true;
                     }
 
                     results.Add(AssetDatabase.LoadMainAssetAtPath(GetRelativeAssetsPath(file)));
@@ -72,6 +75,12 @@ public class SpritePath : FinderToolBasePath
                     EditorApplication.update = null;
                     startIndex = 0;
                     SetTip(string.Format("查找结果如下({0}):", results.Count), MessageType.Info);
+
+                    if (hasDoReplace)
+                    {
+                        AssetDatabase.SaveAssets();
+                        AssetDatabase.Refresh();
+                    }
                 }
             };
             SetTip(string.Format("查找结果如下({0}):", results.Count), MessageType.Info);
