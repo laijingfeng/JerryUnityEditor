@@ -1,0 +1,382 @@
+fileFormatVersion: 2
+guid: 1a685ea37c8f2f34c93d9d62ce1ba869
+timeCreated: 1477474490
+licenseType: Pro
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: UI_AttributeIcon_tex_0
+    21300002: UI_AttributeIcon_tex_1
+    21300004: UI_AttributeIcon_tex_2
+    21300006: UI_AttributeIcon_tex_3
+    21300008: UI_AttributeIcon_tex_4
+    21300010: UI_AttributeIcon_tex_5
+    21300012: UI_AttributeIcon_tex_6
+    21300014: UI_AttributeIcon_tex_7
+    21300016: UI_AttributeIcon_tex_8
+    21300018: UI_AttributeIcon_tex_9
+    21300020: UI_AttributeIcon_tex_10
+    21300022: UI_AttributeIcon_tex_11
+    21300024: UI_AttributeIcon_tex_12
+    21300026: UI_AttributeIcon_tex_13
+    21300028: UI_AttributeIcon_tex_14
+    21300030: UI_AttributeIcon_tex_15
+    21300032: UI_AttributeIcon_tex_16
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 256
+  textureSettings:
+    filterMode: -1
+    aniso: 0
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: -1
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 5
+  buildTargetSettings:
+  - buildTarget: Standalone
+    maxTextureSize: 256
+    textureFormat: 5
+    compressionQuality: 0
+    allowsAlphaSplitting: 0
+  - buildTarget: iPhone
+    maxTextureSize: 256
+    textureFormat: 13
+    compressionQuality: 0
+    allowsAlphaSplitting: 0
+  - buildTarget: Android
+    maxTextureSize: 256
+    textureFormat: 4
+    compressionQuality: 0
+    allowsAlphaSplitting: 0
+  spriteSheet:
+    sprites:
+    - name: UI_AttributeIcon_tex_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 212
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 22}
+        - {x: -22, y: 18}
+        - {x: -22, y: -21}
+        - {x: -18, y: -22}
+        - {x: 20, y: -22}
+        - {x: 22, y: -18}
+        - {x: 22, y: 20}
+        - {x: 16, y: 22}
+    - name: UI_AttributeIcon_tex_1
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 212
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 22}
+        - {x: -22, y: 18}
+        - {x: -22, y: -21}
+        - {x: -18, y: -22}
+        - {x: 20, y: -22}
+        - {x: 22, y: -18}
+        - {x: 22, y: 20}
+        - {x: 16, y: 22}
+    - name: UI_AttributeIcon_tex_2
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 212
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 22}
+        - {x: -22, y: 18}
+        - {x: -22, y: -21}
+        - {x: -18, y: -22}
+        - {x: 20, y: -22}
+        - {x: 22, y: -18}
+        - {x: 22, y: 20}
+        - {x: 16, y: 22}
+    - name: UI_AttributeIcon_tex_3
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 212
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 22}
+        - {x: -22, y: 18}
+        - {x: -22, y: -21}
+        - {x: -18, y: -22}
+        - {x: 20, y: -22}
+        - {x: 22, y: -18}
+        - {x: 22, y: 20}
+        - {x: 16, y: 22}
+    - name: UI_AttributeIcon_tex_4
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 212
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 22}
+        - {x: -22, y: 18}
+        - {x: -22, y: -21}
+        - {x: -18, y: -22}
+        - {x: 20, y: -22}
+        - {x: 22, y: -18}
+        - {x: 22, y: 20}
+        - {x: 16, y: 22}
+    - name: UI_AttributeIcon_tex_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 167
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 22}
+        - {x: -22, y: 18}
+        - {x: -22, y: -21}
+        - {x: -18, y: -22}
+        - {x: 20, y: -22}
+        - {x: 22, y: -18}
+        - {x: 22, y: 20}
+        - {x: 16, y: 22}
+    - name: UI_AttributeIcon_tex_6
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 167
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 22}
+        - {x: -22, y: 18}
+        - {x: -22, y: -21}
+        - {x: -18, y: -22}
+        - {x: 20, y: -22}
+        - {x: 22, y: -18}
+        - {x: 22, y: 20}
+        - {x: 16, y: 22}
+    - name: UI_AttributeIcon_tex_7
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 167
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 22}
+        - {x: -22, y: 18}
+        - {x: -22, y: -21}
+        - {x: -18, y: -22}
+        - {x: 20, y: -22}
+        - {x: 22, y: -18}
+        - {x: 22, y: 20}
+        - {x: 16, y: 22}
+    - name: UI_AttributeIcon_tex_8
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 167
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 22}
+        - {x: -22, y: 18}
+        - {x: -22, y: -21}
+        - {x: -18, y: -22}
+        - {x: 20, y: -22}
+        - {x: 22, y: -18}
+        - {x: 22, y: 20}
+        - {x: 16, y: 22}
+    - name: UI_AttributeIcon_tex_9
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 167
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 22}
+        - {x: -22, y: 18}
+        - {x: -22, y: -21}
+        - {x: -18, y: -22}
+        - {x: 20, y: -22}
+        - {x: 22, y: -18}
+        - {x: 22, y: 20}
+        - {x: 16, y: 22}
+    - name: UI_AttributeIcon_tex_10
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 219
+        width: 32
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 15, y: 0, z: 15, w: 33}
+      outline:
+      - - {x: -14, y: 18}
+        - {x: -16, y: 15}
+        - {x: -16, y: -18}
+        - {x: 16, y: -18}
+        - {x: 16, y: 15}
+        - {x: 15, y: 18}
+    - name: UI_AttributeIcon_tex_11
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 122
+        width: 36
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 17, y: 0, z: 17, w: 40}
+      outline:
+      - - {x: -15, y: 22}
+        - {x: -18, y: 20}
+        - {x: -18, y: -22}
+        - {x: 18, y: -22}
+        - {x: 18, y: 19}
+        - {x: 16, y: 22}
+    - name: UI_AttributeIcon_tex_12
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 133
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 15, y: 0, z: 15, w: 0}
+      outline:
+      - - {x: 10, y: 16}
+        - {x: -13, y: 16}
+        - {x: -16, y: 9}
+        - {x: -16, y: -16}
+        - {x: 16, y: -16}
+        - {x: 16, y: 9}
+    - name: UI_AttributeIcon_tex_13
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 136
+        width: 30
+        height: 28
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 14, y: 13, z: 14, w: 13}
+      outline: []
+    - name: UI_AttributeIcon_tex_14
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 102
+        width: 26
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: UI_AttributeIcon_tex_15
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 172
+        width: 30
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: UI_AttributeIcon_tex_16
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 123
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -20, y: 22}
+        - {x: -22, y: 18}
+        - {x: -22, y: -21}
+        - {x: -18, y: -22}
+        - {x: 20, y: -22}
+        - {x: 22, y: -18}
+        - {x: 22, y: 20}
+        - {x: 16, y: 22}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: ui_bundle
+  assetBundleVariant: 
