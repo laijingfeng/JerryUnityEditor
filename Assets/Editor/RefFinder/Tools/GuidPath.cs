@@ -9,7 +9,7 @@ using UnityEngine;
 /// </summary>
 public class GuidPath : FinderToolBasePath
 {
-    protected override void WorkPath(Object findObject, string findPath)
+    protected override void WorkPath(Object findObject, string findPath, Object newObject)
     {
         string findObjectPath = AssetDatabase.GetAssetPath(findObject);
         string findPathAbs = Application.dataPath + "/../" + findPath;

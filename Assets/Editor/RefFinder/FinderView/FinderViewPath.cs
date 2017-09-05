@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class FinderViewPath : FinderViewBase
 {
+    /// <summary>
+    /// 替换成新的对象
+    /// </summary>
+    protected Object newObject = null;
+
     private string findPath = "Assets";
     private Rect pathRect;
 
@@ -16,6 +21,8 @@ public class FinderViewPath : FinderViewBase
 
     protected override void ChildDraw()
     {
+        newObject = EditorGUILayout.ObjectField(new GUIContent("新的对象", "拖拽或选择查找对象到这里"), newObject, typeof(Object), true);
+
         pathRect = EditorGUILayout.GetControlRect();
         findPath = EditorGUI.TextField(pathRect, new GUIContent("查找目录", "拖拽需要的目录到这里即可"), findPath);
         if ((Event.current.type == EventType.dragUpdated || Event.current.type == EventType.DragExited) &&
@@ -54,7 +61,7 @@ public class FinderViewPath : FinderViewBase
                 match = true;
                 if (finder != null)
                 {
-                    finder.Work(findObject, findPath);
+                    finder.Work(findObject, findPath, newObject);
                 }
                 else
                 {
