@@ -88,7 +88,18 @@ public class ResFinder : EditorWindow
             }
         }
         EditorGUILayout.EndHorizontal();
-
+        if (GUILayout.Button(new GUIContent("输出查找结果", "点击输出查找结果")))
+        {
+            if (!working)
+            {
+                string ret = string.Format("查找结果:{0}", results.Count);
+                for (int i = 0, imax = results.Count; i < imax; i++)
+                {
+                    ret += "\n" + results[i].name;
+                }
+                UnityEngine.Debug.LogWarning(ret);
+            }
+        }
         EditorGUILayout.EndVertical();
 
         EditorGUILayout.BeginVertical("box");
