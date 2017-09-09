@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-//version: 2017-08-24 20:57:44
+//version: 2017-09-10 00:39:40
 //update: 加入汉字判断，修复单个字符搜索不支持的BUG
 
 /// <summary>
@@ -179,11 +179,12 @@ public class StringLogicJudge
     #region 语法检查
 
     /// <summary>
-    /// 搜索串能包含的字符，再加0-9/a-z/A-Z/汉字
+    /// <para>搜索串能包含的字符，再加0-9/a-z/A-Z/汉字</para>
+    /// <para>/和.可能路径用</para>
     /// </summary>
     static private List<char> m_oks = new List<char>() 
     {
-        '&','|','_','(',')',' ','!'
+        '&','|','_','(',')',' ','!','/','.'
     };
 
     /// <summary>

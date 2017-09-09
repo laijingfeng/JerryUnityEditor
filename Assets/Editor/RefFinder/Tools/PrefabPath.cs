@@ -7,6 +7,11 @@ using UnityEngine;
 
 public class PrefabPath : FinderToolBasePath
 {
+    /// <summary>
+    /// 备注，Hierarchy的对象无效
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     private string GetFileID(Object obj)
     {
         PropertyInfo inspectorModeInfo = typeof(SerializedObject).GetProperty("inspectorMode", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -47,7 +52,8 @@ public class PrefabPath : FinderToolBasePath
             {
                 string file = files[startIndex];
                 bool isCancel = EditorUtility.DisplayCancelableProgressBar("匹配资源中", file, (float)startIndex / (float)files.Length);
-                if (Regex.IsMatch(File.ReadAllText(file), @"prefab: {fileID: " + findObjectFileId + ", guid: " + findObjectGuid + ", type: 2}"))
+                //查找无需太严，要支持Hierarchy
+                if (Regex.IsMatch(File.ReadAllText(file), @", guid: " + findObjectGuid + ", type: 2}"))
                 {
                     //要替换
                     if (!string.IsNullOrEmpty(newObjectGuid))
