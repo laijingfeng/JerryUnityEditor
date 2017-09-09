@@ -24,6 +24,7 @@ public class RefFinder : EditorWindow
         new SpriteMgr(),
         new MonoMgr(),
         new TextureMgr(),
+        new PrefabMgr(),
     };
 
     void OnGUI()
