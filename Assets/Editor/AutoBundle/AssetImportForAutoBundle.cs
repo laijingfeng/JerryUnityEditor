@@ -55,7 +55,8 @@ namespace Jerry
                 if (s.Contains(".prefab")
                     || s.Contains(".json")
                     || s.Contains(".png") || s.Contains(".jpg") || s.Contains(".tga")
-                    || s.Contains(".mat"))
+                    || s.Contains(".mat")
+                    || s.Contains(".unity"))
                 {
                     FindRuleAndSet(s);
                 }

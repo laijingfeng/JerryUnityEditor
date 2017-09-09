@@ -81,7 +81,7 @@ namespace Jerry
             List<string> ss = new List<string>();
             if (m_CurRule.sets == null || m_CurRule.sets.Count < 1)
             {
-                return ss.ToArray();
+                return null;
             }
             foreach (AutoBundleRule im in m_CurRule.sets)
             {
