@@ -14,6 +14,11 @@ public class ResFinder : EditorWindow
     private string findPath2 = "";
     private Rect pathRect;
     /// <summary>
+    /// 过滤路径
+    /// </summary>
+    private string pathFilter = "";
+    private string pathFilter2 = "";
+    /// <summary>
     /// 名字
     /// </summary>
     private string withName = "";
@@ -63,6 +68,8 @@ public class ResFinder : EditorWindow
             }
         }
 
+        pathFilter = EditorGUILayout.TextField(new GUIContent("过滤路径", "支持逻辑运算符"), pathFilter);
+        EditorGUILayout.HelpBox("&:与\n|:或\n!:非\n_name0&(!hi|cc)\n(名称含_name0)且((名称不含hi)或(名称含cc))", MessageType.Info, true);
         withName = EditorGUILayout.TextField(new GUIContent("过滤名字", "支持正则和逻辑运算符"), withName);
         EditorGUILayout.BeginHorizontal();
         useRegularExpression = EditorGUILayout.ToggleLeft(new GUIContent("正则", "是否使用正则表达式"), useRegularExpression, GUILayout.MaxWidth(50));
@@ -134,11 +141,13 @@ public class ResFinder : EditorWindow
         withBundle2 = withBundle;
         withPostfix2 = withPostfix;
         findPath2 = findPath;
+        pathFilter2 = pathFilter;
         EditorCoroutineLooper.StopLoop(IE_GetFiles());
 
         if (string.IsNullOrEmpty(withName2)
             && string.IsNullOrEmpty(withBundle2)
-            && string.IsNullOrEmpty(withPostfix2))
+            && string.IsNullOrEmpty(withPostfix2)
+            && string.IsNullOrEmpty(pathFilter2))
         {
             tip = "至少设置一个过滤条件";
             return;
@@ -215,6 +224,12 @@ public class ResFinder : EditorWindow
             {
                 return false;
             }
+        }
+        if (!string.IsNullOrEmpty(pathFilter2))
+        {
+            string filePath = EditorUtil.PathAbsolute2Assets(path);
+            filePath = Path.GetDirectoryName(filePath);
+            return StringLogicJudge.Judge(filePath.ToLower(), pathFilter2.ToLower());
         }
         if (!string.IsNullOrEmpty(withName2))
         {
