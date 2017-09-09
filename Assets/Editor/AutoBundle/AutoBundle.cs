@@ -8,11 +8,12 @@ namespace Jerry
     public class AutoBundle : ScriptableObject
     {
         public bool showLog;
+        [UnityEngine.SerializeField]
         public List<AutoBundleRule> sets;
 
         public static AutoBundle CreateAssetRule()
         {
-            AutoBundle autoBundle = AutoBundle.CreateInstance<AutoBundle>();
+            AutoBundle autoBundle = AutoBundle.CreateInstance<AutoBundle>();//(AutoBundle)Activator.CreateInstance(typeof(AutoBundle), true);
             autoBundle.Init();
             return autoBundle;
         }

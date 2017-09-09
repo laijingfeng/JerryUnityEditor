@@ -38,6 +38,8 @@ namespace Jerry
 
         public override void OnInspectorGUI()
         {
+            serializedObject.Update();
+
             m_CurRule = (AutoBundle)target;
 
             DrawAddBtn();
@@ -54,6 +56,10 @@ namespace Jerry
 
             DrawSelect();
 
+            if (GUI.changed)
+            {
+                EditorUtility.SetDirty(target);
+            }
             serializedObject.ApplyModifiedProperties();
         }
 
@@ -85,7 +91,10 @@ namespace Jerry
             }
             foreach (AutoBundleRule im in m_CurRule.sets)
             {
-                ss.Add(im.m_MyName);
+                if (im != null)
+                {
+                    ss.Add(im.m_MyName);
+                }
             }
             return ss.ToArray();
         }
@@ -185,6 +194,11 @@ namespace Jerry
                 || m_CurRule.sets == null
                 || m_SelectedID < 0
                 || m_SelectedID >= m_CurRule.sets.Count)
+            {
+                return;
+            }
+
+            if (m_CurRule.sets[m_SelectedID] == null)
             {
                 return;
             }

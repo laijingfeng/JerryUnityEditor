@@ -1,10 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
 namespace Jerry
 {
-    public class AutoBundleRule : ScriptableObject
+    [System.Serializable]
+    public class AutoBundleRule
     {
         public enum PathFilterType
         {
@@ -14,7 +16,7 @@ namespace Jerry
 
         public static AutoBundleRule CreateAutoBundleRule(string name)
         {
-            AutoBundleRule set = AutoBundleRule.CreateInstance<AutoBundleRule>();
+            AutoBundleRule set = (AutoBundleRule)Activator.CreateInstance(typeof(AutoBundleRule), true);
             set.Init(name);
             return set;
         }
