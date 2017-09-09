@@ -1,11 +1,21 @@
 ﻿using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
 public class PrefabPath : FinderToolBasePath
 {
+    private string GetFileID(Object obj)
+    {
+        PropertyInfo inspectorModeInfo = typeof(SerializedObject).GetProperty("inspectorMode", BindingFlags.NonPublic | BindingFlags.Instance);
+        SerializedObject srlzedObject = new SerializedObject(obj);
+        inspectorModeInfo.SetValue(srlzedObject, InspectorMode.Debug, null);
+        SerializedProperty localIdProp = srlzedObject.FindProperty("m_LocalIdentfierInFile");
+        return localIdProp.intValue.ToString();
+    }
+
     protected override void WorkPath(Object findObject, string findPath, Object newObject)
     {
         string newObjectPath = "";
@@ -16,23 +26,13 @@ public class PrefabPath : FinderToolBasePath
         {
             newObjectPath = AssetDatabase.GetAssetPath(newObject);
             newObjectGuid = AssetDatabase.AssetPathToGUID(newObjectPath);
-
-            Match mtNew = Regex.Match(File.ReadAllText(newObjectPath), @"--- !u!1 &(\d+)", RegexOptions.Singleline);
-            if (mtNew != null && !string.IsNullOrEmpty(mtNew.Value))
-            {
-                newObjectFileId = mtNew.Value;
-                newObjectFileId = newObjectFileId.Split('&')[1];
-            }
+            newObjectFileId = GetFileID(newObject);
         }
 
         string findObjectPath = AssetDatabase.GetAssetPath(findObject);
-        string findObjectFileId = "";
-        Match mt = Regex.Match(File.ReadAllText(findObjectPath), @"--- !u!1 &(\d+)", RegexOptions.Singleline);
-        if (mt != null && !string.IsNullOrEmpty(mt.Value))
-        {
-            findObjectFileId = mt.Value;
-            findObjectFileId = findObjectFileId.Split('&')[1];
-        }
+        string findObjectFileId = GetFileID(findObject);
+
+        UnityEngine.Debug.LogWarning(findObjectFileId + " ");
 
         string findPathAbs = Application.dataPath + "/../" + findPath;
         string[] files = Directory.GetFiles(findPathAbs, "*.*", SearchOption.AllDirectories)
