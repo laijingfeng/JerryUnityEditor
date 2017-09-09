@@ -32,8 +32,6 @@ public class PrefabPath : FinderToolBasePath
         string findObjectPath = AssetDatabase.GetAssetPath(findObject);
         string findObjectFileId = GetFileID(findObject);
 
-        UnityEngine.Debug.LogWarning(findObjectFileId + " ");
-
         string findPathAbs = Application.dataPath + "/../" + findPath;
         string[] files = Directory.GetFiles(findPathAbs, "*.*", SearchOption.AllDirectories)
             .Where(s => IsMyCarrier(s)).ToArray();
