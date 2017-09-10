@@ -56,7 +56,8 @@ namespace Jerry
                     || s.Contains(".json")
                     || s.Contains(".png") || s.Contains(".jpg") || s.Contains(".tga")
                     || s.Contains(".mat")
-                    || s.Contains(".unity"))
+                    || s.Contains(".unity")
+                    || s.Contains(".controller"))
                 {
                     FindRuleAndSet(s);
                 }
