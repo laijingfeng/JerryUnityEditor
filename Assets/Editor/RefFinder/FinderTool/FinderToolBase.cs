@@ -2,6 +2,7 @@
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using System.Text;
 
 public abstract class FinderToolBase
 {
@@ -22,6 +23,30 @@ public abstract class FinderToolBase
             }
             EditorGUILayout.EndVertical();
         }
+    }
+
+    public void OutputFindContent()
+    {
+        string outFilePath = Application.dataPath + "/../" + RefFinder.OUTPUT_CONTENT_FILE;
+        if (System.IO.File.Exists(outFilePath))
+        {
+            File.Delete(outFilePath);
+        }
+        using (StreamWriter writer = new StreamWriter(outFilePath, true, Encoding.UTF8))
+        {
+            writer.WriteLine(string.Format("查找结果:{0}", results.Count));
+        }
+        if (results.Count > 0)
+        {
+            foreach (Object obj in results)
+            {
+                using (StreamWriter writer = new StreamWriter(outFilePath, true, Encoding.UTF8))
+                {
+                    writer.WriteLine(obj.name);
+                }
+            }
+        }
+        SetTip(string.Format("输出查找内容完成，见{0}", RefFinder.OUTPUT_CONTENT_FILE), MessageType.Info);
     }
 
     protected void SetTip(string info, MessageType type)

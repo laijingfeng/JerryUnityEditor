@@ -37,6 +37,11 @@ public abstract class FinderViewBase
         {
             Work();
         }
+
+        if (GUILayout.Button("OutputFindContent"))
+        {
+            OutputFindContent();
+        }
    
         EditorGUILayout.BeginVertical();
         RefreshTip();
@@ -57,6 +62,14 @@ public abstract class FinderViewBase
             return false;
         }
         return true;
+    }
+
+    private void OutputFindContent()
+    {
+        if (finder != null)
+        {
+            finder.OutputFindContent();
+        }
     }
 
     private void RefreshTip()

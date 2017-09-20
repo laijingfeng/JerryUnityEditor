@@ -11,6 +11,7 @@ public class RefFinder : EditorWindow
     }
 
     private Object findObject = null;
+    public const string OUTPUT_CONTENT_FILE = "RefFinderOutput.txt";
 
     private int toolbarIdx = 0;
     private List<FinderViewBase> finderViewList = new List<FinderViewBase>()

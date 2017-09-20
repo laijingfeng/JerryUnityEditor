@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
-using System.Text.RegularExpressions;
 
 public class ResFinder : EditorWindow
 {
+    public const string OUTPUT_CONTENT_FILE = "ResFinderOutput.txt";
+
     /// <summary>
     /// 路径
     /// </summary>
@@ -99,12 +102,24 @@ public class ResFinder : EditorWindow
         {
             if (!working)
             {
-                string ret = string.Format("查找结果:{0}", results.Count);
+                string outFilePath = Application.dataPath + "/../" + ResFinder.OUTPUT_CONTENT_FILE;
+                if (System.IO.File.Exists(outFilePath))
+                {
+                    File.Delete(outFilePath);
+                }
+
+                using (StreamWriter writer = new StreamWriter(outFilePath, true, Encoding.UTF8))
+                {
+                    writer.WriteLine(string.Format("查找结果:{0}", results.Count));
+                }
                 for (int i = 0, imax = results.Count; i < imax; i++)
                 {
-                    ret += "\n" + results[i].name;
+                    using (StreamWriter writer = new StreamWriter(outFilePath, true, Encoding.UTF8))
+                    {
+                        writer.WriteLine(results[i].name);
+                    }
                 }
-                UnityEngine.Debug.LogWarning(ret);
+                UnityEngine.Debug.LogWarning(string.Format("输出查找内容完成，见{0}", ResFinder.OUTPUT_CONTENT_FILE));
             }
         }
         EditorGUILayout.EndVertical();
