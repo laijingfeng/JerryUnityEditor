@@ -12,15 +12,19 @@ public abstract class FinderToolBase
     public FinderToolMgrBase mgr = null;
 
     public abstract void Work(params object[] param);
+
+    private Vector2 scrollPos;
     public void Draw()
     {
         if (results.Count > 0)
         {
             EditorGUILayout.BeginVertical();
+            scrollPos = GUILayout.BeginScrollView(scrollPos, GUILayout.MinHeight(300));
             foreach (Object obj in results)
             {
                 EditorGUILayout.ObjectField(obj, typeof(Object), true);
             }
+            GUILayout.EndScrollView();
             EditorGUILayout.EndVertical();
         }
     }
