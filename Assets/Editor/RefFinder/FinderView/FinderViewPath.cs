@@ -65,7 +65,7 @@ public class FinderViewPath : FinderViewBase
                 }
                 else
                 {
-                    SetTip(string.Format("{0}查找方式还未实现", fromType), MessageType.Warning);
+                    SetTip(string.Format("{0}的{1}查找方式还未实现", findObject.GetType(), fromType), MessageType.Warning);
                     return false;
                 }
                 break;

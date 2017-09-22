@@ -110,12 +110,22 @@ public abstract class FinderToolMgrBase
                             type = AssetType.Material;
                         }
                         break;
+                    case ".fbx":
+                        {
+                            type = AssetType.Fbx;
+                        }
+                        break;
                 }
             }
         }
         return type;
     }
 
+    /// <summary>
+    /// 可能不准确，UnityEngine.GameObject可能是预设或模型
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static AssetType Object2Type(Object obj)
     {
         AssetType type = AssetType.Unknow;
@@ -144,9 +154,19 @@ public abstract class FinderToolMgrBase
     public enum AssetType
     {
         Unknow = 0,
+        /// <summary>
+        /// 场景
+        /// </summary>
         Scene,
+        /// <summary>
+        /// 预设
+        /// </summary>
         GameObject,
         Sprite,
         Material,
+        /// <summary>
+        /// 模型
+        /// </summary>
+        Fbx,
     }
 }

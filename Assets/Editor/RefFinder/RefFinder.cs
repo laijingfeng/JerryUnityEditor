@@ -20,12 +20,14 @@ public class RefFinder : EditorWindow
         new FinderViewObject(),
         new FinderViewCurScene(),
     };
+
     public static List<FinderToolMgrBase> finderMgrList = new List<FinderToolMgrBase>()
     {
         new SpriteMgr(),
         new MonoMgr(),
         new TextureMgr(),
         new PrefabMgr(),
+        new MaterialMgr(),
     };
 
     void OnGUI()
