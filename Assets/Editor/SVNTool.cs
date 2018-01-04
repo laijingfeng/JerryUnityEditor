@@ -1,8 +1,7 @@
-﻿using UnityEditor;
-using UnityEngine;
-using System.IO;
+﻿using System.IO;
+using UnityEditor;
 
-//version: 2017-09-02 08:26:04
+//version: 2018-01-04 11:39:56
 
 public class SVNTool
 {
@@ -54,14 +53,22 @@ public class SVNTool
         DoSvnCommit(path);
     }
 
-    static private void DoSvnUpdate(string path)
+    /// <summary>
+    /// 用public方便其他插件使用
+    /// </summary>
+    /// <param name="path"></param>
+    static public void DoSvnUpdate(string path)
     {
         UnityEngine.Debug.Log("Update " + EditorUtil.PathAbsolute2Assets(path));
         string param = string.Format(@"/command:update /path:""{0}"" /notempfile /closeonend:0", path);
         UnityCallProcess.CallProcess("TortoiseProc.exe", param);
     }
 
-    static private void DoSvnCommit(string path)
+    /// <summary>
+    /// 用public方便其他插件使用
+    /// </summary>
+    /// <param name="path"></param>
+    static public void DoSvnCommit(string path)
     {
         UnityEngine.Debug.Log("Commit " + EditorUtil.PathAbsolute2Assets(path));
         string param = string.Format(@"/command:commit /path:""{0}"" /logmsg:"""" /notempfile /closeonend:0", path);
