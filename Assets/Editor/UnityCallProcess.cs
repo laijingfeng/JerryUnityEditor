@@ -1,28 +1,30 @@
 ﻿using System.Diagnostics;
 
-//version: 2017-09-02 08:26:04
+//version: 2018-04-11 23:37:14
 
+/// <summary>
+/// Unity执行外部程序
+/// </summary>
 public class UnityCallProcess
 {
     /// <summary>
     /// 执行外部程序
     /// </summary>
-    /// <param name="processName"></param>
-    /// <param name="param"></param>
-    /// <returns></returns>
-    public static bool CallProcess(string processName, string param)
+    /// <param name="processName">程序名</param>
+    /// <param name="param">参数</param>
+    /// <param name="withWindow">是否带有系统窗口</param>
+    /// <returns>是否成功</returns>
+    public static bool CallProcess(string processName, string param, bool withWindow = true)
     {
         ProcessStartInfo process = new ProcessStartInfo
         {
-            CreateNoWindow = false,
+            CreateNoWindow = !withWindow,
             UseShellExecute = false,
             RedirectStandardError = true,
             RedirectStandardOutput = true,
             FileName = processName,
             Arguments = param,
         };
-
-        //UnityEngine.Debug.Log(processName + " " + param);
 
         Process p = Process.Start(process);
         p.StandardOutput.ReadToEnd();
