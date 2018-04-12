@@ -52,6 +52,7 @@ namespace Jerry
             EditorGUILayout.HelpBox("&:与\n|:或\n!:非\n_name0&(!hi|cc)\n(路径含_name0)且((路径不含hi)或(路径含cc))", MessageType.Info, true);
 
             this.m_Bundle = EditorGUILayout.TextField("Bundle", this.m_Bundle);
+            EditorGUILayout.HelpBox("$FILENAME可以替换名称", MessageType.Info, true);
 
             EditorGUILayout.EndVertical();
         }
@@ -88,7 +89,13 @@ namespace Jerry
             {
                 return false;
             }
-            importer.assetBundleName = m_Bundle;
+            string fileName = Path.GetFileNameWithoutExtension(importer.assetPath).ToLower();
+            string bundle = m_Bundle;
+            if(!string.IsNullOrEmpty(bundle))
+            {
+                bundle = bundle.Replace("$FILENAME", fileName);
+            }
+            importer.assetBundleName = bundle;
             return true;
         }
     }

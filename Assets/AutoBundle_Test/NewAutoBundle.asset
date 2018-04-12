@@ -12,4 +12,16 @@ MonoBehaviour:
   m_Name: NewAutoBundle
   m_EditorClassIdentifier: 
   showLog: 0
-  sets: []
+  sets:
+  - m_InUse: 1
+    m_TmpIgnore: 0
+    m_PathFilterType: 0
+    m_PathFilter: '!.'
+    m_MyName: rule_0
+    m_Bundle: $FILENAME_haha
+  - m_InUse: 1
+    m_TmpIgnore: 0
+    m_PathFilterType: 0
+    m_PathFilter: .
+    m_MyName: rule_1
+    m_Bundle: 

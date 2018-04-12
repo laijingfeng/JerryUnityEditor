@@ -57,7 +57,7 @@ namespace Jerry
         {
             if (!s.Contains("."))//文件夹
             {
-                return false;
+                return true;
             }
             if (s.Contains("/Editor/") || s.Contains("/Plugins/"))//编辑器和插件
             {
