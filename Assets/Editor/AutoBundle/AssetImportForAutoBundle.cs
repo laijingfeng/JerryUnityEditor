@@ -48,16 +48,39 @@ namespace Jerry
             return null;
         }
 
+        /// <summary>
+        /// 资源是否需要检测
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        static private bool NeedCheck(string s)
+        {
+            if (!s.Contains("."))//文件夹
+            {
+                return false;
+            }
+            if (s.Contains("/Editor/") || s.Contains("/Plugins/"))//编辑器和插件
+            {
+                return false;
+            }
+            string extension = Path.GetExtension(s);
+            if (extension.Equals(".cs") || extension.Equals(".dll"))//代码
+            {
+                return false;
+            }
+            //插件的文件
+            if (extension.Equals(".a") || extension.Equals(".so") || extension.Equals(".jar") || extension.Equals(".aar"))
+            {
+                return false;
+            }
+            return true;
+        }
+
         static private void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
         {
             foreach (string s in importedAssets)
             {
-                if (s.Contains(".prefab")
-                    || s.Contains(".json")
-                    || s.Contains(".png") || s.Contains(".jpg") || s.Contains(".tga")
-                    || s.Contains(".mat")
-                    || s.Contains(".unity")
-                    || s.Contains(".controller"))
+                if (NeedCheck(s))
                 {
                     FindRuleAndSet(s);
                 }
