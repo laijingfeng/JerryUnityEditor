@@ -29,7 +29,7 @@ public class BuildTools : Editor
     private static void DoSettings()
     {
         //PlayerSettings.productName = "UnityProject";
-        PlayerSettings.bundleIdentifier = string.Format("com.jerry.lai.{0}", PlayerSettings.productName);
+        PlayerSettings.applicationIdentifier = string.Format("com.jerry.lai.{0}", PlayerSettings.productName);
         PlayerSettings.keystorePass = "jerrylai@jingfeng*1990";
         PlayerSettings.keyaliasPass = "lai123";
     }
