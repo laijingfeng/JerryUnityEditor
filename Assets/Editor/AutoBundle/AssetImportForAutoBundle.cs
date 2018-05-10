@@ -39,11 +39,11 @@ namespace Jerry
 
             path = Directory.GetParent(path).FullName;
             path = path.Replace('\\', '/');
-            path = path.Remove(0, Application.dataPath.Length);
-            path = path.Insert(0, "Assets");
-            if (path != "Assets")
+            
+            path = path.Replace(Application.dataPath, "");
+            if (!string.IsNullOrEmpty(path))
             {
-                return SearchRecursive(impoter, path);
+                return SearchRecursive(impoter, "Assets" + path);
             }
             return null;
         }
