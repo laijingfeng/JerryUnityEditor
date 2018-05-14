@@ -13,40 +13,47 @@ namespace Jerry
         /// <returns></returns>
         static private AutoBundle FindAutoBundle(AssetImporter impoter, string path)
         {
-            return SearchRecursive(impoter, path);
+            return SearchRecursive(impoter, path, 0);
         }
 
         /// <summary>
-        /// 当前目录查找，然后往上递归
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        static private AutoBundle SearchRecursive(AssetImporter impoter, string path)
-        {
-            foreach (var findAsset in AssetDatabase.FindAssets("t:AutoBundle", new[] { Path.GetDirectoryName(path) }))
-            {
-                var p = Path.GetDirectoryName(AssetDatabase.GUIDToAssetPath(findAsset));
-                if (p == Path.GetDirectoryName(path))
-                {
-                    string setName = string.Empty;
-                    AutoBundle rule = AssetDatabase.LoadAssetAtPath<AutoBundle>(AssetDatabase.GUIDToAssetPath(findAsset));
-                    if (rule != null && rule.IsMatch(impoter, out setName))
-                    {
-                        return rule;
-                    }
-                }
-            }
+		/// 当前目录查找，然后往上递归
+		/// </summary>
+		/// <param name="impoter"></param>
+		/// <param name="path"></param>
+		/// <param name="deep">递归深度，防止死循环</param>
+		/// <returns></returns>
+		static private AutoBundle SearchRecursive(AssetImporter impoter, string path, int deep)
+		{
+			if (deep > 10)
+			{
+				return null;
+			}
 
-            path = Directory.GetParent(path).FullName;
-            path = path.Replace('\\', '/');
-            
-            path = path.Replace(Application.dataPath, "");
-            if (!string.IsNullOrEmpty(path))
-            {
-                return SearchRecursive(impoter, "Assets" + path);
-            }
-            return null;
-        }
+			foreach (var findAsset in AssetDatabase.FindAssets("t:AutoBundle", new[] { Path.GetDirectoryName(path) }))
+			{
+				var p = Path.GetDirectoryName(AssetDatabase.GUIDToAssetPath(findAsset));
+				if (p == Path.GetDirectoryName(path))
+				{
+					string setName = string.Empty;
+					AutoBundle rule = AssetDatabase.LoadAssetAtPath<AutoBundle>(AssetDatabase.GUIDToAssetPath(findAsset));
+					if (rule != null && rule.IsMatch(impoter, out setName))
+					{
+						return rule;
+					}
+				}
+			}
+
+			path = Directory.GetParent(path).FullName;
+			path = path.Replace('\\', '/');
+
+			path = path.Replace(Application.dataPath, "");
+			if (!string.IsNullOrEmpty(path))
+			{
+				return SearchRecursive(impoter, "Assets" + path, deep + 1);
+			}
+			return null;
+		}
 
         /// <summary>
         /// 资源是否需要检测
