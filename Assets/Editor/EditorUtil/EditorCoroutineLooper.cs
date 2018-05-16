@@ -1,11 +1,14 @@
-﻿using System.Collections;
+﻿#if UNITY_EDITOR
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+#endif
 
 public static class EditorCoroutineLooper
 {
-    private static Dictionary<IEnumerator, Object> m_loopers = new Dictionary<IEnumerator, Object>();
+#if UNITY_EDITOR
+    private static Dictionary<IEnumerator, object> m_loopers = new Dictionary<IEnumerator, object>();
     private static bool M_Started = false;
     private static List<IEnumerator> M_DropItems = new List<IEnumerator>();
 
@@ -14,7 +17,7 @@ public static class EditorCoroutineLooper
     /// </summary>
     /// <param name="mb">脚本</param>
     /// <param name="iterator">方法</param>
-    public static void StartLoop(Object mb, IEnumerator iterator)
+    public static void StartLoop(object mb, IEnumerator iterator)
     {
         if (mb != null && iterator != null)
         {
@@ -46,15 +49,20 @@ public static class EditorCoroutineLooper
     {
         if (m_loopers.Count > 0)
         {
-            var allItems = m_loopers.GetEnumerator();
-            while (allItems.MoveNext())
+            //出现过报错：InvalidOperationException: out of sync，现换foreach为for
+            List<IEnumerator> list = new List<IEnumerator>(m_loopers.Keys);
+            for (int i = 0; i < list.Count; i++)
             {
-                var item = allItems.Current;
-                var mb = item.Value;
+                if (i >= list.Count || list[i] == null)
+                {
+                    continue;
+                }
+                var key = list[i];
+                var mb = m_loopers[list[i]];
                 //卸载时丢弃Looper
                 if (mb == null)
                 {
-                    M_DropItems.Add(item.Key);
+                    M_DropItems.Add(key);
                     continue;
                 }
                 //隐藏时别执行Loop
@@ -66,10 +74,10 @@ public static class EditorCoroutineLooper
                     }
                 }
                 //执行Loop，执行完毕也丢弃Looper
-                IEnumerator ie = item.Key;
+                IEnumerator ie = key;
                 if (!ie.MoveNext())
                 {
-                    M_DropItems.Add(item.Key);
+                    M_DropItems.Add(key);
                 }
             }
             //集中处理丢弃的Looper
@@ -89,4 +97,5 @@ public static class EditorCoroutineLooper
             M_Started = false;
         }
     }
+#endif
 }
