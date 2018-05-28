@@ -33,12 +33,12 @@ public abstract class FinderViewBase
         
         ChildDraw();
 
-        if (GUILayout.Button("Find"))
+        if (GUILayout.Button("点击开始查找"))
         {
             Work();
         }
 
-        if (GUILayout.Button("OutputFindContent"))
+        if (GUILayout.Button("导出结果文件"))
         {
             OutputFindContent();
         }
@@ -92,6 +92,31 @@ public abstract class FinderViewBase
         FromPath = 0,
         FromObject,
         FromCurScene,
+    }
+
+    /// <summary>
+    /// 查找方式->显示名称
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    static public string FindFromType2ShowName(FindFromType type)
+    {
+        switch (type)
+        {
+            case FindFromType.FromPath:
+                {
+                    return "从指定路径";
+                }
+            case FindFromType.FromObject:
+                {
+                    return "从特定对象";
+                }
+            case FindFromType.FromCurScene:
+                {
+                    return "从当前场景";
+                }
+        }
+        return "";
     }
 
     static public string FindFromType2Tip(FindFromType type)

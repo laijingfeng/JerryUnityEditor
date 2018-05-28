@@ -7,6 +7,10 @@ public abstract class FinderToolMgrBase
     protected Dictionary<FinderViewBase.FindFromType, FinderToolBase> dicTools = new Dictionary<FinderViewBase.FindFromType, FinderToolBase>();
 
     public abstract bool Match(System.Type type);
+    /// <summary>
+    /// 资源可能的载体
+    /// </summary>
+    /// <returns></returns>
     protected abstract List<AssetType> MyCarrierList();
 
     public string MyCarrierListStr()
@@ -151,6 +155,9 @@ public abstract class FinderToolMgrBase
         return type;
     }
 
+    /// <summary>
+    /// 资源类型
+    /// </summary>
     public enum AssetType
     {
         Unknow = 0,

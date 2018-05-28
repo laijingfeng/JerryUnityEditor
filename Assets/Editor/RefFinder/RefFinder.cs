@@ -39,7 +39,7 @@ public class RefFinder : EditorWindow
         List<GUIContent> viewNames = new List<GUIContent>();
         foreach (FinderViewBase view in finderViewList)
         {
-            viewNames.Add(new GUIContent(view.FromType.ToString(), FinderViewBase.FindFromType2Tip(view.FromType)));
+            viewNames.Add(new GUIContent(FinderViewBase.FindFromType2ShowName(view.FromType), FinderViewBase.FindFromType2Tip(view.FromType)));
         }
         toolbarIdx = GUILayout.Toolbar(toolbarIdx, viewNames.ToArray());
         foreach (FinderViewBase view in finderViewList)
