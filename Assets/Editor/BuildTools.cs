@@ -2,10 +2,14 @@
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+#if HOTFIX_ENABLE
+using CSObjectWrapEditor;
+using XLua;
+#endif
 
-//Version: 2018-06-02-00
+//Version: 2018-06-02-01
 
-//Unity5.6.1里用到/../这种路径的时候，会被判定为到处到Assets目录了，所以不要出现这种写法
+//Unity5.6.1里用到/../这种路径的时候，会被判定为导出到Assets目录了，所以不要出现这种写法
 public class BuildTools : Editor
 {
 #if UNITY_ANDROID
@@ -101,6 +105,13 @@ public class BuildTools : Editor
         PlayerSettings.Android.keystorePass = "jerrylai@jingfeng*1990";
         PlayerSettings.Android.keyaliasName = "jerrylai";
         PlayerSettings.Android.keyaliasPass = "lai123";
+
+#if HOTFIX_ENABLE
+        Generator.ClearAll();
+        Generator.GenAll();
+        //有时还会出现提示信息说没有GenCode，经过测试是误提示，所以强制设置上
+        DelegateBridge.Gen_Flag = true;
+#endif
     }
 
     private static string[] GetLevels()
