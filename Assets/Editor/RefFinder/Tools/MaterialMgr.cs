@@ -28,7 +28,7 @@ public class MaterialMgr : FinderToolMgrBase
         {
             AssetType.Scene,
             AssetType.GameObject,
-            AssetType.Fbx,
+            //AssetType.Fbx,//暂时屏蔽模型
         };
     }
 }
