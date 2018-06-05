@@ -31,6 +31,7 @@ public class ParticleExporter : MonoBehaviour
     /// 自定义宽高
     /// </summary>
     public Vector2 manualSize;
+    public bool showHelp = true;
 
     /// <summary>
     /// 工作中
@@ -49,6 +50,7 @@ public class ParticleExporter : MonoBehaviour
 
     public void Start()
     {
+        showHelp = true;
         canWork = false;
         working = false;
         over = false;
@@ -127,6 +129,19 @@ public class ParticleExporter : MonoBehaviour
         }
 
         Debug.LogError(string.Format("宽:{0} 高:{1}", right - left + 1, bottom - top + 1));
+    }
+
+    private void OnGUI()
+    {
+        if (!showHelp)
+        {
+            return;
+        }
+        GUILayout.Box("leftTop和rightBottom选定范围"
+            + "\n建议打开Gizmos，可以看到范围线"
+            + "\nmanualSize可以指定宽高"
+            + "\nN键：执行工作"
+            + "\nM键：计算调整范围");
     }
 
     void Update()
