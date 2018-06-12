@@ -2,6 +2,8 @@
 	"version": "2018-05-28-00",
 	"dependencies":[
 		"CommonBase.dll",
-		"UnityEditor.dll"
+		"UnityEditor.dll",
+		"UnityEngine.dll",
+		"UnityEngine.UI.dll"
 	]
 }
