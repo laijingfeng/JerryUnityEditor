@@ -1,4 +1,6 @@
-﻿using System;
+﻿//version：2018-06-12-00
+
+using System;
 using System.Collections;
 using System.IO;
 using UnityEngine;
@@ -8,29 +10,38 @@ public class ParticleExporter : MonoBehaviour
     /// <summary>
     /// 导出帧率
     /// </summary>
+    [Tooltip("导出帧率")]
     public int frameRate = 25;
     /// <summary>
     /// 需要导出几帧
     /// </summary>
-    public float frameCount = 100;
+    [Tooltip("需要导出几帧")]
+    public float frameCount = 2;
     /// <summary>
-    /// 相机
+    /// 使用的相机
     /// </summary>
+    [Tooltip("使用的相机")]
     public Camera exportCamera;
     /// <summary>
-    /// 左上角
+    /// 范围左上角
     /// </summary>
+    [Tooltip("范围左上角")]
     public Transform leftTop;
     /// <summary>
-    /// 右下角
+    /// 范围右下角
     /// </summary>
+    [Tooltip("范围右下角")]
     public Transform rightBottom;
+    [Tooltip("导出子文件名，根文件夹是Images")]
     public string folderName;
+    [Tooltip("是否可以工作")]
     public bool canWork = false;
     /// <summary>
     /// 自定义宽高
     /// </summary>
+    [Tooltip("自定义宽高")]
     public Vector2 manualSize;
+    [Tooltip("显示帮助")]
     public bool showHelp = true;
 
     /// <summary>
@@ -138,7 +149,7 @@ public class ParticleExporter : MonoBehaviour
             return;
         }
         GUILayout.Box("leftTop和rightBottom选定范围"
-            + "\n建议打开Gizmos，可以看到范围线"
+            + "\n建议打开Gizmos，可以看到范围线（需要设置CanWork）"
             + "\nmanualSize可以指定宽高"
             + "\nN键：执行工作"
             + "\nM键：计算调整范围");
@@ -188,6 +199,8 @@ public class ParticleExporter : MonoBehaviour
         RenderTexture blackCamRenderTexture = new RenderTexture(width, height, 24, RenderTextureFormat.ARGB32);
         RenderTexture whiteCamRenderTexture = new RenderTexture(width, height, 24, RenderTextureFormat.ARGB32);
 
+        Color cameraOriginalColor = exportCamera.backgroundColor;
+
         exportCamera.targetTexture = blackCamRenderTexture;
         exportCamera.backgroundColor = Color.black;
         exportCamera.Render();
@@ -199,6 +212,8 @@ public class ParticleExporter : MonoBehaviour
         exportCamera.Render();
         RenderTexture.active = whiteCamRenderTexture;
         Texture2D texw = GetTex2D();
+
+        exportCamera.backgroundColor = cameraOriginalColor;
 
         if (texw && texb)
         {
