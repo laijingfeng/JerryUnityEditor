@@ -89,6 +89,11 @@ public abstract class FinderToolMgrBase
     protected abstract FinderToolBase GetToolObject();
     protected abstract FinderToolBase GetToolCurScene();
 
+    /// <summary>
+    /// 路径(后缀)转类型
+    /// </summary>
+    /// <param name="path"></param>
+    /// <returns></returns>
     public static AssetType Path2Type(string path)
     {
         AssetType type = AssetType.Unknow;

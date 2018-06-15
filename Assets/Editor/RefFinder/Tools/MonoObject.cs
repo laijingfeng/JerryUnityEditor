@@ -18,7 +18,6 @@ public class MonoObject : FinderToolBaseObject
             case FinderToolMgrBase.AssetType.GameObject:
                 {
                     results.AddRange(DoOneGameObject(findObject, targetObject as GameObject));
-                    
                 }
                 break;
             default:
