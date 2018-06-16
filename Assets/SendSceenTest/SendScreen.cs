@@ -18,6 +18,7 @@ public class SendScreen : MonoBehaviour
     private Texture2D tex_output;
     private Texture2D tex_input;
     private Rect rect;
+    private Color[] readColors;
 
     private void Start()
     {
@@ -34,11 +35,15 @@ public class SendScreen : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForEndOfFrame();
+            //yield return new WaitForSeconds(0.1f);
             CaptureOneFrame();
         }
     }
 
+    /// <summary>
+    /// 捕获一帧
+    /// </summary>
     private void CaptureOneFrame()
     {
         //Debug.LogWarning("CaptureOneFrame");
@@ -51,6 +56,7 @@ public class SendScreen : MonoBehaviour
         m_TarImg.texture = tex_output;
         m_Camera.targetTexture = null;
 
-        //tex_output.GetPixels();
+        //readColors = tex_output.GetPixels();
+        //print(readColors.Length + " " + rect.width + " " + rect.height);
     }
 }
