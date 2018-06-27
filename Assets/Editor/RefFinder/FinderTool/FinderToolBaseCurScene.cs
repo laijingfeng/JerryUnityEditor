@@ -23,7 +23,7 @@ public abstract class FinderToolBaseCurScene : FinderToolBase
         List<GameObject> ret = new List<GameObject>();
         foreach (GameObject go in gos)
         {
-            //只要跟结点
+            //只要根结点
             if (go.transform.parent != null)
             {
                 continue;
