@@ -7,7 +7,7 @@ using CSObjectWrapEditor;
 using XLua;
 #endif
 
-//Version: 2018-06-02-01
+//Version: 2018-06-29-00
 
 //Unity5.6.1里用到/../这种路径的时候，会被判定为导出到Assets目录了，所以不要出现这种写法
 public class BuildTools : Editor
@@ -72,6 +72,7 @@ public class BuildTools : Editor
     [MenuItem("Tools/导出WebGL", false, 0)]
     static public void ExportWebGL()
     {
+        HandleXlua();
         string exportPath = Application.dataPath.Replace("/Assets", "") + "/WebGL";
         if (Directory.Exists(exportPath))
         {
@@ -84,16 +85,39 @@ public class BuildTools : Editor
 
 #if UNITY_IOS
     [MenuItem("Tools/导出iOS", false, 0)]
-    static public void ExportWebGL()
+    static public void ExportIOS()
     {
-        string exportPath = Application.dataPath.Replace("/Assets", "") + "/iOS" + System.DateTime.Now.ToString("yyyMMdd_HHmmss");
+        HandleXlua();
+        string dirName = "iOS" + System.DateTime.Now.ToString("yyyMMdd_HHmmss");
+        string exportPath = Application.dataPath.Replace("/Assets", "") + "/" + dirName;
+
         if (Directory.Exists(exportPath))
         {
             Directory.Delete(exportPath, true);
         }
         Directory.CreateDirectory(exportPath);
         DoBuild(exportPath, BuildTarget.iOS, BuildOptions.Il2CPP);
+        
+        ModifyIOS(dirName);
     }
+
+    static private void ModifyIOS(string dirName)
+    {
+        string curDir = Directory.GetCurrentDirectory();
+        string toolsPath = curDir + "/iOSRes/";
+        try
+        {
+            Directory.SetCurrentDirectory(toolsPath);
+            UnityCallProcess.CallProcess("python.exe", string.Format("{0} {1}", toolsPath + "modify_ios.py", "project_name-" + dirName), false);
+            Directory.SetCurrentDirectory(curDir);
+        }
+        catch (System.Exception ex)
+        {
+            UnityEngine.Debug.LogError(ex);
+            Directory.SetCurrentDirectory(curDir);
+        }
+    }
+
 #endif
 
     private static void DoSettings()
@@ -106,6 +130,11 @@ public class BuildTools : Editor
         PlayerSettings.Android.keyaliasName = "jerrylai";
         PlayerSettings.Android.keyaliasPass = "lai123";
 
+        HandleXlua();
+    }
+
+    private static void HandleXlua()
+    {
 #if HOTFIX_ENABLE
         Generator.ClearAll();
         Generator.GenAll();
