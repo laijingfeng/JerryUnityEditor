@@ -144,10 +144,17 @@ public abstract class FinderToolMgrBase
             {
                 type = AssetType.GameObject;
             }
+#if UNITY_5_OR_NEWER
             else if (obj.GetType() == typeof(UnityEditor.SceneAsset))
             {
                 type = AssetType.Scene;
             }
+#else
+            else if (obj.GetType() == typeof(UnityEngine.Object))
+            {
+                type = AssetType.Scene;
+            }
+#endif
             else if (obj.GetType() == typeof(UnityEngine.Sprite))
             {
                 type = AssetType.Sprite;
