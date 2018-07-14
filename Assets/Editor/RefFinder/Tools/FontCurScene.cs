@@ -9,8 +9,7 @@ public class FontCurScene : FinderToolBaseCurScene
         List<GameObject> gos = SceneRootGameObjects();
         foreach (GameObject go in gos)
         {
-            Debug.LogWarning(go.name.ToString());
-            //results.AddRange(MonoObject.DoOneGameObject(findObject, go));
+            results.AddRange(FontObject.DoOneGameObject(findObject, go));
         }
         SetTip(string.Format("查找结果如下({0}):", results.Count), MessageType.Info);
     }
