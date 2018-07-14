@@ -1,26 +1,11 @@
 ﻿using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
 public class PrefabPath : FinderToolBasePath
 {
-    /// <summary>
-    /// 备注，Hierarchy的对象无效
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    private string GetFileID(Object obj)
-    {
-        PropertyInfo inspectorModeInfo = typeof(SerializedObject).GetProperty("inspectorMode", BindingFlags.NonPublic | BindingFlags.Instance);
-        SerializedObject srlzedObject = new SerializedObject(obj);
-        inspectorModeInfo.SetValue(srlzedObject, InspectorMode.Debug, null);
-        SerializedProperty localIdProp = srlzedObject.FindProperty("m_LocalIdentfierInFile");
-        return localIdProp.intValue.ToString();
-    }
-
     protected override void WorkPath(Object findObject, string findPath, Object newObject)
     {
         string newObjectPath = "";
@@ -33,7 +18,7 @@ public class PrefabPath : FinderToolBasePath
             newObjectGuid = AssetDatabase.AssetPathToGUID(newObjectPath);
             newObjectFileId = GetFileID(newObject);
         }
-
+        
         string findObjectPath = AssetDatabase.GetAssetPath(findObject);
         string findObjectFileId = GetFileID(findObject);
 

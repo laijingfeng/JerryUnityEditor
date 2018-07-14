@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System.Reflection;
+using UnityEditor;
 using UnityEngine;
 
 public abstract class FinderToolBasePath : FinderToolBase
@@ -19,5 +20,20 @@ public abstract class FinderToolBasePath : FinderToolBase
     protected bool IsMyCarrier(string path)
     {
         return IsMyCarrier(FinderToolMgrBase.Path2Type(path));
+    }
+
+    /// <summary>
+    /// <para>获取对象的FileID</para>
+    /// <para>Hierarchy的对象无效</para>
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    protected string GetFileID(Object obj)
+    {
+        PropertyInfo inspectorModeInfo = typeof(SerializedObject).GetProperty("inspectorMode", BindingFlags.NonPublic | BindingFlags.Instance);
+        SerializedObject srlzedObject = new SerializedObject(obj);
+        inspectorModeInfo.SetValue(srlzedObject, InspectorMode.Debug, null);
+        SerializedProperty localIdProp = srlzedObject.FindProperty("m_LocalIdentfierInFile");
+        return localIdProp.intValue.ToString();
     }
 }

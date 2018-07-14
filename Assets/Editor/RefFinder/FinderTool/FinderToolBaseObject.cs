@@ -13,9 +13,31 @@ public abstract class FinderToolBaseObject : FinderToolBase
             SetTip("内部参数错误", MessageType.Error);
             return;
         }
-        WorkObject((UnityEngine.Object)param[0], (UnityEngine.Object)param[1]);
+        PreWorkObject((UnityEngine.Object)param[0], (UnityEngine.Object)param[1]);
     }
 
+    /// <summary>
+    /// 在特定对象查找_预处理
+    /// </summary>
+    /// <param name="findObject">查找对象</param>
+    /// <param name="targetObject">目标对象</param>
+    private void PreWorkObject(UnityEngine.Object findObject, UnityEngine.Object targetObject)
+    {
+        FinderToolMgrBase.AssetType type = FinderToolMgrBase.Object2Type(targetObject);
+        if (!IsMyCarrier(type))
+        {
+            SetTip(string.Format("目标对象不是查找对象的载体({0})", MyCarrierListStr()), MessageType.Warning);
+            return;
+        }
+        WorkObject(findObject, targetObject);
+    }
+
+    /// <summary>
+    /// <para>在特定对象查找</para>
+    /// <para>已经检查过了目标对象是否符合载体</para>
+    /// </summary>
+    /// <param name="findObject">查找对象</param>
+    /// <param name="targetObject">目标对象</param>
     protected abstract void WorkObject(UnityEngine.Object findObject, UnityEngine.Object targetObject);
 
     protected bool IsMyCarrier(UnityEngine.Object obj)
@@ -23,6 +45,12 @@ public abstract class FinderToolBaseObject : FinderToolBase
         return IsMyCarrier(FinderToolMgrBase.Object2Type(obj));
     }
 
+    /// <summary>
+    /// 根据GUID判断findObject是否被targetObject引用
+    /// </summary>
+    /// <param name="findObject"></param>
+    /// <param name="targetObject"></param>
+    /// <returns></returns>
     protected List<UnityEngine.Object> DoOneObjectByGUID(UnityEngine.Object findObject, UnityEngine.Object targetObject)
     {
         List<UnityEngine.Object> ret = new List<UnityEngine.Object>();

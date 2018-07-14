@@ -6,7 +6,13 @@ public abstract class FinderToolMgrBase
 {
     protected Dictionary<FinderViewBase.FindFromType, FinderToolBase> dicTools = new Dictionary<FinderViewBase.FindFromType, FinderToolBase>();
 
+    /// <summary>
+    /// 资源是否匹配
+    /// </summary>
+    /// <param name="type">类型</param>
+    /// <returns></returns>
     public abstract bool Match(System.Type type);
+
     /// <summary>
     /// 资源可能的载体
     /// </summary>
@@ -144,7 +150,7 @@ public abstract class FinderToolMgrBase
             {
                 type = AssetType.GameObject;
             }
-#if UNITY_5_OR_NEWER
+#if UNITY_5//_OR_NEWER //在Unity5.6.1f1中UNITY_5_OR_NEWER没有起作用 2018-07-14 17:22:13
             else if (obj.GetType() == typeof(UnityEditor.SceneAsset))
             {
                 type = AssetType.Scene;
@@ -168,7 +174,7 @@ public abstract class FinderToolMgrBase
     }
 
     /// <summary>
-    /// 资源类型
+    /// 载体资源类型
     /// </summary>
     public enum AssetType
     {

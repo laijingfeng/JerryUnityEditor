@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public abstract class FinderToolBaseCurScene : FinderToolBase
@@ -17,6 +18,21 @@ public abstract class FinderToolBaseCurScene : FinderToolBase
 
     protected abstract void WorkCurScene(Object findObject);
 
+    /// <summary>
+    /// 当前场景的根对象
+    /// </summary>
+    /// <returns></returns>
+    protected List<GameObject> SceneRootGameObjects()
+    {
+        UnityEngine.SceneManagement.Scene s = EditorSceneManager.GetActiveScene();
+        return new List<GameObject>(s.GetRootGameObjects());
+    }
+
+    /// <summary>
+    /// 当前场景激活的根对象
+    /// </summary>
+    /// <returns></returns>
+    [System.Obsolete("请使用SceneRootGameObjects")]
     protected List<GameObject> SceneActiveRootGameObjects()
     {
         GameObject[] gos = Editor.FindObjectsOfType<GameObject>();

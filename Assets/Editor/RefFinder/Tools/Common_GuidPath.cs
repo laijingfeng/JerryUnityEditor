@@ -7,7 +7,7 @@ using UnityEngine;
 /// <summary>
 /// 通用，GUID查找
 /// </summary>
-public class GuidPath : FinderToolBasePath
+public class Common_GuidPath : FinderToolBasePath
 {
     protected override void WorkPath(Object findObject, string findPath, Object newObject)
     {

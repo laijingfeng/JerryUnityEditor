@@ -8,6 +8,9 @@ public abstract class FinderToolBase
 {
     public string tip = "";
     public MessageType tipType = MessageType.Info;
+    /// <summary>
+    /// 查找结果
+    /// </summary>
     protected List<Object> results = new List<Object>();
     public FinderToolMgrBase mgr = null;
 

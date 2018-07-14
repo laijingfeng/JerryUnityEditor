@@ -28,6 +28,7 @@ public class RefFinder : EditorWindow
         new TextureMgr(),
         new PrefabMgr(),
         new MaterialMgr(),
+        new FontMgr(),
     };
 
     void OnGUI()

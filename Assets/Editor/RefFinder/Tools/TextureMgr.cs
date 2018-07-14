@@ -9,7 +9,7 @@ public class TextureMgr : FinderToolMgrBase
 
     protected override FinderToolBase GetToolPath()
     {
-        return new GuidPath();
+        return new Common_GuidPath();
     }
 
     protected override FinderToolBase GetToolObject()
