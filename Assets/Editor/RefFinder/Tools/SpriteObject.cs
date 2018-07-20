@@ -36,6 +36,7 @@ public class SpriteObject : FinderToolBaseObject
         string findObjectGuid = AssetDatabase.AssetPathToGUID(findObjectPath);
         string spriteName = findObject.name;
         Image[] imgs = targetGo.GetComponentsInChildren<Image>(true);
+		SpriteRenderer[] srs = targetGo.GetComponentsInChildren<SpriteRenderer>(true);
         List<Object> ret = new List<Object>();
 
         foreach (Image im in imgs)
@@ -47,6 +48,18 @@ public class SpriteObject : FinderToolBaseObject
             if (AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(im.sprite)).Equals(findObjectGuid))
             {
                 ret.Add(im);
+            }
+        }
+		
+		foreach (SpriteRenderer sr in srs)
+        {
+            if (sr == null || sr.sprite == null || sr.sprite.name.Equals(spriteName) == false)
+            {
+                continue;
+            }
+            if (AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(sr.sprite)).Equals(findObjectGuid))
+            {
+                ret.Add(sr);
             }
         }
 
