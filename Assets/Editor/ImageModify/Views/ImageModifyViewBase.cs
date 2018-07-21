@@ -6,7 +6,7 @@ using UnityEngine;
 public class ImageModifyViewBase
 {
     protected string m_WorkPath = "";
-    protected string m_Tip = "";
+    protected string m_Tip = "图片修改";
     protected MessageType m_TipType = MessageType.Info;
     /// <summary>
     /// 上下左右(0123)
@@ -30,16 +30,13 @@ public class ImageModifyViewBase
         m_WorkPath = workPath;
 
         ChildDraw();
-
-        GUILayout.Space(10);
-        DrawName();
-        GUILayout.Space(10);
-
+        
         if (GUILayout.Button("点击开始"))
         {
             Work();
         }
 
+        GUILayout.Space(10);
         EditorGUILayout.BeginVertical();
         EditorGUILayout.HelpBox(m_Tip, m_TipType, true);
         EditorGUILayout.EndVertical();

@@ -13,6 +13,7 @@ public class ImageModifyViewAdd : ImageModifyViewBase
     protected override void ChildDraw()
     {
         base.ChildDraw();
+
         EditorGUILayout.LabelField("从");
         DrawDir();
         DrawIdx();
@@ -21,6 +22,10 @@ public class ImageModifyViewAdd : ImageModifyViewBase
         EditorGUILayout.LabelField(Dir2RowOrColumn() + "的");
         DrawColor();
         EditorGUILayout.LabelField("像素");
+
+        GUILayout.Space(10);
+        DrawName();
+        GUILayout.Space(10);
     }
 
     protected override bool Work()

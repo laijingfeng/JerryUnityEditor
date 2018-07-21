@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿//Version：2018-07-21-00
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -17,12 +18,14 @@ public class ImageModify : EditorWindow
         "增",
         "删",
         "改",
+        "其他",
     };
     public static List<ImageModifyViewBase> workerViewList = new List<ImageModifyViewBase>()
     {
         new ImageModifyViewAdd(),
         new ImageModifyViewDelete(),
         new ImageModifyViewModify(),
+        new ImageModifyViewOther(),
     };
 
     void OnGUI()
