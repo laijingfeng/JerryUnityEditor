@@ -7,7 +7,7 @@ public class RefFinder : EditorWindow
     [MenuItem("JerryWins/RefFinder")]
     private static void Open()
     {
-        GetWindow<RefFinder>();
+        GetWindow<RefFinder>("引用查找");
     }
 
     private Object findObject = null;
