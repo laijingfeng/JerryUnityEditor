@@ -1,23 +1,29 @@
 ﻿using System.IO;
 using UnityEditor;
 
-//version: 2018-01-04 11:39:56
+//version: 2018-07-31 16:24:44
 
 public class SVNTool
 {
-    [MenuItem("Tools/Svn/Update_Project", false, 0)]
+    [MenuItem("Tools/Svn/更新工程", false, 0)]
     static public void SvnUpdate()
     {
         DoSvnUpdate(EditorUtil.PathAssets2Absolute2(""));
     }
 
-    [MenuItem("Tools/Svn/Commit_Project", false, 0)]
+    [MenuItem("Tools/Svn/提交工程", false, 0)]
     static public void SvnCommit()
     {
         DoSvnCommit(EditorUtil.PathAssets2Absolute2(""));
     }
 
-    [MenuItem("Assets/Svn/Update_Select", false)]
+    [MenuItem("Tools/Svn/工程日志", false, 0)]
+    static public void SvnLog()
+    {
+        DoSvnLog(EditorUtil.PathAssets2Absolute2(""));
+    }
+
+    [MenuItem("Assets/Svn/更新选中目录", false)]
     static public void SvnUpdateAssets()
     {
         UnityEngine.Object[] selection = Selection.GetFiltered(typeof(UnityEngine.Object), SelectionMode.Assets);
@@ -35,7 +41,7 @@ public class SVNTool
         DoSvnUpdate(path);
     }
 
-    [MenuItem("Assets/Svn/Commit_Select", false)]
+    [MenuItem("Assets/Svn/提交选中目录", false)]
     static public void SvnCommitAssets()
     {
         UnityEngine.Object[] selection = Selection.GetFiltered(typeof(UnityEngine.Object), SelectionMode.Assets);
@@ -53,8 +59,22 @@ public class SVNTool
         DoSvnCommit(path);
     }
 
+    [MenuItem("Assets/Svn/选中文件日志", false)]
+    static public void SvnLogAssets()
+    {
+        UnityEngine.Object[] selection = Selection.GetFiltered(typeof(UnityEngine.Object), SelectionMode.Assets);
+        if (selection == null || selection.Length <= 0)
+        {
+            UnityEngine.Debug.LogWarning("没有选中文件或文件夹");
+            return;
+        }
+        string path = AssetDatabase.GetAssetPath(selection[0]);
+        path = EditorUtil.PathAssets2Absolute2(path);
+        DoSvnLog(path);
+    }
+
     /// <summary>
-    /// 用public方便其他插件使用
+    /// <para>用public方便其他插件使用</para>
     /// </summary>
     /// <param name="path"></param>
     static public void DoSvnUpdate(string path)
@@ -65,13 +85,24 @@ public class SVNTool
     }
 
     /// <summary>
-    /// 用public方便其他插件使用
+    /// <para>用public方便其他插件使用</para>
     /// </summary>
     /// <param name="path"></param>
     static public void DoSvnCommit(string path)
     {
         UnityEngine.Debug.Log("Commit " + EditorUtil.PathAbsolute2Assets(path));
         string param = string.Format(@"/command:commit /path:""{0}"" /logmsg:"""" /notempfile /closeonend:0", path);
+        UnityCallProcess.CallProcess("TortoiseProc.exe", param);
+    }
+
+    /// <summary>
+    /// <para>显示日志</para>
+    /// <para>用public方便其他插件使用</para>
+    /// </summary>
+    /// <param name="path"></param>
+    static public void DoSvnLog(string path)
+    {
+        string param = string.Format(@"/command:log /path:""{0}"" /notempfile /closeonend:0", path);
         UnityCallProcess.CallProcess("TortoiseProc.exe", param);
     }
 }
