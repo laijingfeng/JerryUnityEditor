@@ -1,29 +1,29 @@
 ﻿using System.IO;
 using UnityEditor;
 
-//version: 2018-07-31 16:24:44
+//version: 2018-07-31 19:50:35
 
 public class SVNTool
 {
-    [MenuItem("Tools/Svn/更新工程", false, 0)]
+    [MenuItem("Tools/Svn/【更新】工程", false, 0)]
     static public void SvnUpdate()
     {
         DoSvnUpdate(EditorUtil.PathAssets2Absolute2(""));
     }
 
-    [MenuItem("Tools/Svn/提交工程", false, 0)]
+    [MenuItem("Tools/Svn/【提交】工程", false, 0)]
     static public void SvnCommit()
     {
         DoSvnCommit(EditorUtil.PathAssets2Absolute2(""));
     }
 
-    [MenuItem("Tools/Svn/工程日志", false, 0)]
+    [MenuItem("Tools/Svn/工程【日志】", false, 0)]
     static public void SvnLog()
     {
         DoSvnLog(EditorUtil.PathAssets2Absolute2(""));
     }
 
-    [MenuItem("Assets/Svn/更新选中目录", false)]
+    [MenuItem("Assets/Svn/【更新】选中目录", false)]
     static public void SvnUpdateAssets()
     {
         UnityEngine.Object[] selection = Selection.GetFiltered(typeof(UnityEngine.Object), SelectionMode.Assets);
@@ -41,7 +41,7 @@ public class SVNTool
         DoSvnUpdate(path);
     }
 
-    [MenuItem("Assets/Svn/提交选中目录", false)]
+    [MenuItem("Assets/Svn/【提交】选中目录", false)]
     static public void SvnCommitAssets()
     {
         UnityEngine.Object[] selection = Selection.GetFiltered(typeof(UnityEngine.Object), SelectionMode.Assets);
@@ -59,7 +59,7 @@ public class SVNTool
         DoSvnCommit(path);
     }
 
-    [MenuItem("Assets/Svn/选中文件日志", false)]
+    [MenuItem("Assets/Svn/选中文件【日志】", false)]
     static public void SvnLogAssets()
     {
         UnityEngine.Object[] selection = Selection.GetFiltered(typeof(UnityEngine.Object), SelectionMode.Assets);
