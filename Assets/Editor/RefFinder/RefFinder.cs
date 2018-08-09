@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RefFinder : EditorWindow
 {
-    [MenuItem("JerryWins/RefFinder")]
+    [MenuItem("JerryWins/引用查找")]
     private static void Open()
     {
         GetWindow<RefFinder>("引用查找");
@@ -29,6 +29,7 @@ public class RefFinder : EditorWindow
         new PrefabMgr(),
         new MaterialMgr(),
         new FontMgr(),
+        new ShaderMgr(),
     };
 
     void OnGUI()

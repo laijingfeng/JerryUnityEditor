@@ -188,6 +188,9 @@ public abstract class FinderToolMgrBase
         /// </summary>
         GameObject,
         Sprite,
+        /// <summary>
+        /// 材质
+        /// </summary>
         Material,
         /// <summary>
         /// 模型
