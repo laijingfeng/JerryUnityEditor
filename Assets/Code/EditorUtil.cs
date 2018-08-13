@@ -3,7 +3,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-//version: 2017-09-02 08:26:04
+//version: 2018-08-13 13:41:57
 
 public class EditorUtil
 {
@@ -50,10 +50,10 @@ public class EditorUtil
     }
 
     /// <summary>
-    /// 
+    /// 递归获得目录下的所有文件
     /// </summary>
-    /// <param name="paths"></param>
-    /// <param name="searchPattern">例如:*.cs</param>
+    /// <param name="paths">目录（支持多个目录合并）</param>
+    /// <param name="searchPattern">文件过滤器，例如:*.cs</param>
     /// <returns></returns>
     public static List<string> GetFiles(List<string> paths, string searchPattern = "*.*")
     {
