@@ -13,7 +13,7 @@ public class FindText : MonoBehaviour
         {
             if (t.text.Contains(Content))
             {
-                Debug.LogWarning("find:" + EditorUtil.GetHierarchyPath(t.transform), t);
+                Debug.LogWarning("find:" + EditorUtil.GetTransformHieraichyPath(t.transform), t);
             }
         }
         Debug.LogWarning("find finish");

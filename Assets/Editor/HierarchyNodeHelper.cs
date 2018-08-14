@@ -12,7 +12,7 @@ public class HierarchyNodeHelper : Editor
             return;
         }
         GameObject go = selection[0] as GameObject;
-        Debug.LogWarning("find:" + EditorUtil.GetHierarchyPath(go.transform), go);
+        Debug.LogWarning("find:" + EditorUtil.GetTransformHieraichyPath(go.transform), go);
     }
     
     [MenuItem("GameObject/Tr/PrintTransform", false, 11)]

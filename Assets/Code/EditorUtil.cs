@@ -27,7 +27,12 @@ public class EditorUtil
         return Application.dataPath.Replace("/Assets", "") + "/" + assetPath;
     }
 
-    public static string GetHierarchyPath(Transform tf)
+    /// <summary>
+    /// 获取Transform的Hieraichy路径
+    /// </summary>
+    /// <param name="tf"></param>
+    /// <returns></returns>
+    public static string GetTransformHieraichyPath(Transform tf)
     {
         if (tf == null)
         {
@@ -81,5 +86,109 @@ public class EditorUtil
         }
 
         return filePath;
+    }
+
+    /// <summary>
+    /// 拷贝目录
+    /// </summary>
+    /// <param name="pathFrom">来源目录</param>
+    /// <param name="pathTo">目标目录</param>
+    /// <param name="clean">是否清理已经存在的目标目录，不清理同名文件也一定会覆盖</param>
+    /// <param name="fileNameCheck">只要这个列表里包含的文件名</param>
+    /// <param name="fileNameFilter">文件名需要包含这个列表的所有特征</param>
+    /// <param name="fileNameNotCheck">这个列表里的不要</param>
+    /// <param name="fileNameNotFilter">文件名不能包含这个列表的任意特征</param>
+    public static void CopyDirectory(string pathFrom, string pathTo, bool clean = false, List<string> fileNameCheck = null,
+        List<string> fileNameFilter = null, List<string> fileNameNotCheck = null, List<string> fileNameNotFilter = null)
+    {
+        if (string.IsNullOrEmpty(pathFrom) ||
+            string.IsNullOrEmpty(pathTo))
+        {
+            return;
+        }
+
+        if (Directory.Exists(pathFrom) == false)
+        {
+            return;
+        }
+
+        if (clean)
+        {
+            if (Directory.Exists(pathTo))
+            {
+                Directory.Delete(pathTo, true);
+            }
+            Directory.CreateDirectory(pathTo);
+        }
+        else
+        {
+            if (!Directory.Exists(pathTo))
+            {
+                Directory.CreateDirectory(pathTo);
+            }
+        }
+
+        string[] files = Directory.GetFiles(pathFrom);
+        string fileName;
+        foreach (string file in files)
+        {
+            fileName = Path.GetFileName(file);
+            if (FileNameFilter(fileName, fileNameFilter, true) == false
+                || FileNameFilter(fileName, fileNameNotFilter, false) == false
+                || (fileNameCheck != null && !fileNameCheck.Contains(fileName))
+                || (fileNameNotCheck != null && fileNameNotCheck.Contains(fileName)))
+            {
+                continue;
+            }
+            //不做删除的话，同名文件，只是大小写不一样，文件名不会替换
+            if (File.Exists(pathTo + "/" + fileName))
+            {
+                File.Delete(pathTo + "/" + fileName);
+            }
+            File.Copy(pathFrom + "/" + fileName, pathTo + "/" + fileName, true);
+        }
+
+        string[] directs = Directory.GetDirectories(pathFrom);
+        string directName;
+        foreach (string direct in directs)
+        {
+            directName = Path.GetFileName(direct);
+            CopyDirectory(direct, pathTo + "/" + directName, clean, fileNameCheck, fileNameFilter, fileNameNotCheck, fileNameNotFilter);
+        }
+    }
+
+    /// <summary>
+    /// 文件名过滤
+    /// </summary>
+    /// <param name="fileName">文件名</param>
+    /// <param name="fileNameFilter">检查特征组</param>
+    /// <param name="include">true:包含所有特征才通过;false:不包含所有特征才通过</param>
+    /// <returns>是否通过</returns>
+    private static bool FileNameFilter(string fileName, List<string> fileNameFilter = null, bool include = true)
+    {
+        if (fileNameFilter == null
+            || fileNameFilter.Count <= 0
+            || string.IsNullOrEmpty(fileName))
+        {
+            return true;
+        }
+        foreach (string filter in fileNameFilter)
+        {
+            if (include)
+            {
+                if (!fileName.Contains(filter))
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if (fileName.Contains(filter))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
