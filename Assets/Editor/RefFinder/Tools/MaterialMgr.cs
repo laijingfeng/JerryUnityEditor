@@ -14,7 +14,7 @@ public class MaterialMgr : FinderToolMgrBase
 
     protected override FinderToolBase GetToolObject()
     {
-        return null;
+        return new MaterialObject();
     }
 
     protected override FinderToolBase GetToolCurScene()
@@ -28,7 +28,7 @@ public class MaterialMgr : FinderToolMgrBase
         {
             AssetType.Scene,
             AssetType.GameObject,
-            //AssetType.Fbx,//暂时屏蔽模型
+            AssetType.Fbx,
         };
     }
 }
