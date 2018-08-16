@@ -2,9 +2,18 @@
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
+/// <summary>
+/// 从当前场景查找
+/// </summary>
 public abstract class FinderToolBaseCurScene : FinderToolBase
 {
+    protected override string GetSupportInfoExt()
+    {
+        return "将查找场景里的每一个GameObject";
+    }
+
     public override void Work(params object[] param)
     {
         results.Clear();
@@ -19,13 +28,18 @@ public abstract class FinderToolBaseCurScene : FinderToolBase
     protected abstract void WorkCurScene(Object findObject);
 
     /// <summary>
-    /// 当前场景的根对象
+    /// 当前打开场景的根对象，支持同时打开多个场景
     /// </summary>
     /// <returns></returns>
     protected List<GameObject> SceneRootGameObjects()
     {
-        UnityEngine.SceneManagement.Scene s = EditorSceneManager.GetActiveScene();
-        return new List<GameObject>(s.GetRootGameObjects());
+        List<GameObject> ret = new List<GameObject>();
+        for (int i = 0, imax = SceneManager.sceneCount; i < imax; i++)
+        {
+            UnityEngine.SceneManagement.Scene s = SceneManager.GetSceneAt(i);
+            ret.AddRange(s.GetRootGameObjects());
+        }
+        return ret;
     }
 
     /// <summary>

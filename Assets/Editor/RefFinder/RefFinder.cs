@@ -4,16 +4,28 @@ using UnityEngine;
 
 public class RefFinder : EditorWindow
 {
-    [MenuItem("JerryWins/引用查找")]
+    [MenuItem("Tools/引用查找")]
     private static void Open()
     {
         GetWindow<RefFinder>("引用查找");
     }
 
+    /// <summary>
+    /// 查找对象
+    /// </summary>
     private Object findObject = null;
+    /// <summary>
+    /// 输出文件名
+    /// </summary>
     public const string OUTPUT_CONTENT_FILE = "RefFinderOutput.txt";
 
+    /// <summary>
+    /// 当前选中的查找显示界面
+    /// </summary>
     private int toolbarIdx = 0;
+    /// <summary>
+    /// 查找显示界面列表
+    /// </summary>
     private List<FinderViewBase> finderViewList = new List<FinderViewBase>()
     {
         new FinderViewPath(),
@@ -21,6 +33,9 @@ public class RefFinder : EditorWindow
         new FinderViewCurScene(),
     };
 
+    /// <summary>
+    /// 查找管理器列表
+    /// </summary>
     public static List<FinderToolMgrBase> finderMgrList = new List<FinderToolMgrBase>()
     {
         new SpriteMgr(),
@@ -34,8 +49,6 @@ public class RefFinder : EditorWindow
 
     void OnGUI()
     {
-        EditorGUILayout.BeginVertical();
-
         EditorGUILayout.BeginVertical("box", GUILayout.MinHeight(300));
         findObject = EditorGUILayout.ObjectField(new GUIContent("查找对象", "拖拽或选择查找对象到这里"), findObject, typeof(Object), true);
         List<GUIContent> viewNames = new List<GUIContent>();
@@ -52,15 +65,6 @@ public class RefFinder : EditorWindow
                 break;
             }
         }
-        EditorGUILayout.EndVertical();
-
-        //EditorGUILayout.BeginVertical("box");
-        //if (GUILayout.Button(new GUIContent() { text = "Reset", tooltip = "如果异常了，可尝试重置" }))
-        //{
-        //    DoReset();
-        //}
-        //EditorGUILayout.EndVertical();
-
         EditorGUILayout.EndVertical();
     }
 }

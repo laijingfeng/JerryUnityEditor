@@ -6,7 +6,7 @@ public class MonoCurScene : FinderToolBaseCurScene
 {
     protected override void WorkCurScene(Object findObject)
     {
-        List<GameObject> gos = SceneActiveRootGameObjects();
+        List<GameObject> gos = SceneRootGameObjects();
         foreach (GameObject go in gos)
         {
             results.AddRange(MonoObject.DoOneGameObject(findObject, go));

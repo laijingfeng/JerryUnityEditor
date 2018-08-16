@@ -26,7 +26,11 @@ public abstract class FinderToolBaseObject : FinderToolBase
         FinderToolMgrBase.AssetType type = FinderToolMgrBase.Object2Type(targetObject);
         if (!IsMyCarrier(type))
         {
-            SetTip(string.Format("目标对象不是查找对象的载体({0})", MyCarrierListStr()), MessageType.Warning);
+            SetTip(string.Format("目标对象({0})\n不是\n查找对象({1})\n的载体({2})", 
+                findObject.GetType(), 
+                targetObject.GetType(), 
+                MyCarrierListStr()),
+                MessageType.Warning);
             return;
         }
         WorkObject(findObject, targetObject);

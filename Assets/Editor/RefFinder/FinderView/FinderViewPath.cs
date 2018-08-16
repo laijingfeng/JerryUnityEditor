@@ -9,7 +9,13 @@ public class FinderViewPath : FinderViewBase
     /// </summary>
     protected Object newObject = null;
 
+    /// <summary>
+    /// 查找路径
+    /// </summary>
     private string findPath = "Assets";
+    /// <summary>
+    /// 路径区域
+    /// </summary>
     private Rect pathRect;
 
     public FinderViewPath()

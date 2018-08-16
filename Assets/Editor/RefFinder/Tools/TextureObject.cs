@@ -8,11 +8,6 @@ public class TextureObject : FinderToolBaseObject
     protected override void WorkObject(Object findObject, Object targetObject)
     {
         FinderToolMgrBase.AssetType type = FinderToolMgrBase.Object2Type(targetObject);
-        if (!IsMyCarrier(type))
-        {
-            SetTip(string.Format("目标对象不是查找对象的载体({0})", MyCarrierListStr()), MessageType.Warning);
-            return;
-        }
 
         switch (type)
         {

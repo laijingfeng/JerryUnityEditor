@@ -5,15 +5,21 @@ using UnityEngine.UI;
 
 public class SpriteObject : FinderToolBaseObject
 {
+    protected override string GetSupportInfoExt()
+    {
+        string ext = "目标对象是场景时，预设里引用的将无法查找，建议用从当前场景查找"
+            + "\n检查组件:Image|SpriteRenderer。\n特别提醒自定义脚本里引用的无法查找";
+        if (string.IsNullOrEmpty(base.GetSupportInfoExt()))
+        {
+            return ext;
+        }
+        return string.Format("{0},{1}", base.GetSupportInfoExt(), ext);
+    }
+
     protected override void WorkObject(Object findObject, Object targetObject)
     {
         FinderToolMgrBase.AssetType type = FinderToolMgrBase.Object2Type(targetObject);
-        if (!IsMyCarrier(type))
-        {
-            SetTip(string.Format("目标对象不是查找对象的载体({0})", MyCarrierListStr()), MessageType.Warning);
-            return;
-        }
-
+        
         switch (type)
         {
             case FinderToolMgrBase.AssetType.GameObject:
@@ -36,7 +42,7 @@ public class SpriteObject : FinderToolBaseObject
         string findObjectGuid = AssetDatabase.AssetPathToGUID(findObjectPath);
         string spriteName = findObject.name;
         Image[] imgs = targetGo.GetComponentsInChildren<Image>(true);
-		SpriteRenderer[] srs = targetGo.GetComponentsInChildren<SpriteRenderer>(true);
+        SpriteRenderer[] srs = targetGo.GetComponentsInChildren<SpriteRenderer>(true);
         List<Object> ret = new List<Object>();
 
         foreach (Image im in imgs)
@@ -50,8 +56,8 @@ public class SpriteObject : FinderToolBaseObject
                 ret.Add(im);
             }
         }
-		
-		foreach (SpriteRenderer sr in srs)
+        
+        foreach (SpriteRenderer sr in srs)
         {
             if (sr == null || sr.sprite == null || sr.sprite.name.Equals(spriteName) == false)
             {

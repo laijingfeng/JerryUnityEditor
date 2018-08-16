@@ -4,15 +4,42 @@ using UnityEditor;
 using UnityEngine;
 using System.Text;
 
+/// <summary>
+/// 查找器
+/// </summary>
 public abstract class FinderToolBase
 {
+    /// <summary>
+    /// 提示信息
+    /// </summary>
     public string tip = "";
+    /// <summary>
+    /// 提示信息
+    /// </summary>
     public MessageType tipType = MessageType.Info;
+
     /// <summary>
     /// 查找结果
     /// </summary>
     protected List<Object> results = new List<Object>();
     public FinderToolMgrBase mgr = null;
+
+    /// <summary>
+    /// 获取支持信息
+    /// </summary>
+    public string GetSupportInfo()
+    {
+        return string.Format("将查找的资源类型:{0}\n补充说明:{1}", MyCarrierListStr(), GetSupportInfoExt());
+    }
+
+    /// <summary>
+    /// 额外的支持信息
+    /// </summary>
+    /// <returns></returns>
+    protected virtual string GetSupportInfoExt()
+    {
+        return "无";
+    }
 
     public abstract void Work(params object[] param);
 
@@ -76,6 +103,10 @@ public abstract class FinderToolBase
         return false;
     }
 
+    /// <summary>
+    /// 我的载体列表
+    /// </summary>
+    /// <returns></returns>
     protected string MyCarrierListStr()
     {
         if (mgr != null)

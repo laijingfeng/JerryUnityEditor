@@ -9,7 +9,7 @@ public class MaterialMgr : FinderToolMgrBase
 
     protected override FinderToolBase GetToolPath()
     {
-        return new Common_GuidPath();
+        return new MaterialPath();
     }
 
     protected override FinderToolBase GetToolObject()

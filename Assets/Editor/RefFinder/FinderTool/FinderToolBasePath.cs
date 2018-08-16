@@ -4,6 +4,11 @@ using UnityEngine;
 
 public abstract class FinderToolBasePath : FinderToolBase
 {
+    protected override string GetSupportInfoExt()
+    {
+        return "使用GUID匹配查找";
+    }
+
     public override void Work(params object[] param)
     {
         results.Clear();
@@ -17,6 +22,11 @@ public abstract class FinderToolBasePath : FinderToolBase
 
     protected abstract void WorkPath(Object findObject, string findPath, Object newObject);
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="path">绝对路径</param>
+    /// <returns></returns>
     protected bool IsMyCarrier(string path)
     {
         return IsMyCarrier(FinderToolMgrBase.Path2Type(path));

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEditor;
 
 public abstract class FinderToolMgrBase
 {
@@ -19,6 +20,10 @@ public abstract class FinderToolMgrBase
     /// <returns></returns>
     protected abstract List<AssetType> MyCarrierList();
 
+    /// <summary>
+    /// 我的载体列表
+    /// </summary>
+    /// <returns></returns>
     public string MyCarrierListStr()
     {
         string ret = "";
@@ -30,9 +35,9 @@ public abstract class FinderToolMgrBase
         {
             if (!string.IsNullOrEmpty(ret))
             {
-                ret += "|";
+                ret += "\n";
             }
-            ret += type.ToString();
+            ret += TypeDes(type);
         }
         return ret;
     }
@@ -96,105 +101,228 @@ public abstract class FinderToolMgrBase
     protected abstract FinderToolBase GetToolCurScene();
 
     /// <summary>
-    /// 路径(后缀)转类型
+    /// 对象转类型描述
     /// </summary>
-    /// <param name="path"></param>
+    /// <param name="obj">对象</param>
     /// <returns></returns>
-    public static AssetType Path2Type(string path)
+    public static string Object2TypeDes(Object obj)
     {
-        AssetType type = AssetType.Unknow;
-        if (!string.IsNullOrEmpty(path) && File.Exists(path))
+        AssetType type = FinderToolMgrBase.Object2Type(obj);
+        if(type == AssetType.Unknow)
         {
-            string extension = Path.GetExtension(path).ToLower();
-            if (!string.IsNullOrEmpty(extension))
-            {
-                switch (extension)
-                {
-                    case ".prefab":
-                        {
-                            type = AssetType.GameObject;
-                        }
-                        break;
-                    case ".unity":
-                        {
-                            type = AssetType.Scene;
-                        }
-                        break;
-                    case ".mat":
-                        {
-                            type = AssetType.Material;
-                        }
-                        break;
-                    case ".fbx":
-                        {
-                            type = AssetType.Fbx;
-                        }
-                        break;
-                }
-            }
+            return string.Format("{0}[{1}]", obj.GetType().ToString(), "未知");
         }
-        return type;
+        return TypeDes(type);
     }
 
     /// <summary>
-    /// 可能不准确，UnityEngine.GameObject可能是预设或模型
+    /// 类型的描述
+    /// </summary>
+    /// <param name="type">类型</param>
+    /// <returns></returns>
+    public static string TypeDes(AssetType type)
+    {
+        AssetTypeDes des = assetTypeList.Find((x) => x.type == type);
+        if (des == null)
+        {
+            return "未知";
+        }
+        return string.Format("{0}[{1}/{2}]", des.sysType, des.chineseShortName, des.extension);
+    }
+
+    /// <summary>
+    /// 路径(后缀)转类型
+    /// </summary>
+    /// <param name="path">绝对路径</param>
+    /// <returns></returns>
+    public static AssetType Path2Type(string path)
+    {
+        if (string.IsNullOrEmpty(path) || !File.Exists(path))
+        {
+            return AssetType.Unknow;
+        }
+        string assetPath = EditorUtil.PathAbsolute2Assets(path);
+
+        Object obj = AssetDatabase.LoadAssetAtPath<Object>(assetPath);
+        if (obj == null)//Meta文件会为空
+        {
+            return AssetType.Unknow;
+        }
+
+        string extension = Path.GetExtension(assetPath);
+        System.Type sysType = obj.GetType();
+
+        List<AssetTypeDes> rets = assetTypeList.FindAll((x) => x.extension.Equals(extension));
+        if (rets.Count > 0)
+        {
+            AssetTypeDes des = rets.Find((x) => x.sysType == sysType);
+            if (des != null)
+            {
+                return des.type;
+            }
+            else
+            {
+                return rets[0].type;
+            }
+        }
+        return AssetType.Unknow;
+    }
+
+    /// <summary>
+    /// <para>资源转类型</para>
+    /// <para>Hierarchy里拖拽的无法获取路径，可能不准确</para>
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
     public static AssetType Object2Type(Object obj)
     {
-        AssetType type = AssetType.Unknow;
-        if (obj != null)
+        if (obj == null)
         {
-            if (obj.GetType() == typeof(UnityEngine.GameObject))
+            return AssetType.Unknow;
+        }
+
+        string extension = Path.GetExtension(AssetDatabase.GetAssetPath(obj));
+        System.Type sysType = obj.GetType();
+
+        List<AssetTypeDes> rets = assetTypeList.FindAll((x) => x.sysType == sysType);
+        if (rets.Count > 0)
+        {
+            AssetTypeDes des = rets.Find((x) => x.extension.Equals(extension));
+            if (des != null)
             {
-                type = AssetType.GameObject;
+                return des.type;
             }
-#if UNITY_5//_OR_NEWER //在Unity5.6.1f1中UNITY_5_OR_NEWER没有起作用 2018-07-14 17:22:13
-            else if (obj.GetType() == typeof(UnityEditor.SceneAsset))
+            else
             {
-                type = AssetType.Scene;
-            }
-#else
-            else if (obj.GetType() == typeof(UnityEngine.Object))
-            {
-                type = AssetType.Scene;
-            }
-#endif
-            else if (obj.GetType() == typeof(UnityEngine.Sprite))
-            {
-                type = AssetType.Sprite;
-            }
-            else if (obj.GetType() == typeof(UnityEngine.Material))
-            {
-                type = AssetType.Material;
+                return rets[0].type;
             }
         }
-        return type;
+        return AssetType.Unknow;
     }
 
     /// <summary>
-    /// 载体资源类型
+    /// 资源类型
     /// </summary>
     public enum AssetType
     {
         Unknow = 0,
         /// <summary>
-        /// 场景
+        /// 预设(UnityEngine.GameObject/.prefab)
+        /// </summary>
+        GameObject,
+        /// <summary>
+        /// 模型(UnityEngine.GameObject/.fbx)
+        /// </summary>
+        Fbx,
+        /// <summary>
+        /// 场景(UnityEditor.SceneAsset/.unity)
         /// </summary>
         Scene,
         /// <summary>
-        /// 预设
+        /// 精灵(UnityEngine.Sprite/.png)
         /// </summary>
-        GameObject,
         Sprite,
         /// <summary>
-        /// 材质
+        /// 贴图(UnityEngine.Texture2D/.png)
+        /// </summary>
+        Texture,
+        /// <summary>
+        /// 材质(UnityEngine.Material/.mat)
         /// </summary>
         Material,
         /// <summary>
-        /// 模型
+        /// 脚本(UnityEditor.MonoScript/.cs)
         /// </summary>
-        Fbx,
+        MonoScript,
+    }
+
+    /// <summary>
+    /// 资源类型列表
+    /// </summary>
+    public static List<AssetTypeDes> assetTypeList = new List<AssetTypeDes>()
+    {
+        new AssetTypeDes()
+        {
+            type = AssetType.GameObject,
+            sysType = typeof(UnityEngine.GameObject),
+            extension=".prefab",
+            chineseShortName="预设"
+        },
+        new AssetTypeDes()
+        {
+            type = AssetType.Fbx,
+            sysType = typeof(UnityEngine.GameObject),
+            extension=".fbx",
+            chineseShortName="模型"
+        },
+        new AssetTypeDes()
+        {
+            type = AssetType.Fbx,
+            sysType = typeof(UnityEngine.GameObject),
+            extension=".FBX",
+            chineseShortName="模型"
+        },
+        new AssetTypeDes()
+        {
+            type = AssetType.Scene,
+#if UNITY_5//_OR_NEWER //在Unity5.6.1f1中UNITY_5_OR_NEWER没有起作用 2018-07-14 17:22:13
+            sysType = typeof(UnityEditor.SceneAsset),
+#else
+            sysType = typeof(UnityEngine.Object),
+#endif
+            extension=".unity",
+            chineseShortName="场景"
+        },
+        new AssetTypeDes()
+        {
+            type = AssetType.Sprite,
+            sysType = typeof(UnityEngine.Sprite),
+            extension=".png",
+            chineseShortName="精灵"
+        },
+        new AssetTypeDes()
+        {
+            type = AssetType.Texture,
+            sysType = typeof(UnityEngine.Texture2D),
+            extension=".png",
+            chineseShortName="贴图"
+        },
+        new AssetTypeDes()
+        {
+            type = AssetType.Material,
+            sysType = typeof(UnityEngine.Material),
+            extension=".mat",
+            chineseShortName="材质"
+        },
+        new AssetTypeDes()
+        {
+            type = AssetType.MonoScript,
+            sysType = typeof(UnityEditor.MonoScript),
+            extension=".cs",
+            chineseShortName="脚本"
+        },
+    };
+
+    /// <summary>
+    /// 资源类型描述
+    /// </summary>
+    public class AssetTypeDes
+    {
+        /// <summary>
+        /// 类型
+        /// </summary>
+        public AssetType type;
+        /// <summary>
+        /// 系统类型
+        /// </summary>
+        public System.Type sysType;
+        /// <summary>
+        /// 资源后缀
+        /// </summary>
+        public string extension;
+        /// <summary>
+        /// 中文简称
+        /// </summary>
+        public string chineseShortName;
     }
 }
