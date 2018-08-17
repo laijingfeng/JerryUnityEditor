@@ -42,8 +42,12 @@ public class EditorCode : EditorWindow
         m_EndTime = Time.realtimeSinceStartup + m_ShowTime;
         EditorApplication.update += DoUpdate;
 
-        Rect rect = new Rect(0, 0, 300, 300);
-        m_Window = EditorWindow.GetWindowWithRect(typeof(EditorCode), rect, true, "提示") as EditorCode;
+        Rect rect = new Rect(0, 0, 400, 400);
+        rect.x = (Screen.currentResolution.width - rect.width) * 0.5f;
+        rect.y = (Screen.currentResolution.height - rect.height) * 0.5f;
+        m_Window = EditorWindow.GetWindowWithRect<EditorCode>(rect, true, "提示", false);
+        //强制设置位置，不然会使用上次的
+        m_Window.position = rect;
         m_Window.Show(true);
     }
 
@@ -62,15 +66,26 @@ public class EditorCode : EditorWindow
 
     private void OnGUI()
     {
+        GUILayout.BeginVertical();
+        
         GUILayout.Space(10);
-        GUILayout.Label(m_Tip);
+
+        GUIStyle style = new GUIStyle();
+        style.fontSize = 30;
+        style.wordWrap = true;
+        style.normal.textColor = Color.red;
+        GUILayout.Label(new GUIContent(m_Tip), style);
+
         GUILayout.Space(60);
-        if (GUILayout.Button(string.Format("提前关闭({0:F1}秒后自动关闭)", m_ShowTime)))
+
+        if (GUILayout.Button(string.Format("关闭({0:F1}秒后自动关闭)", m_ShowTime)))
         {
             this.Close();
             m_Window = null;
             m_EndTime = 0;
         }
+
+        GUILayout.EndVertical();
     }
 }
 #endif
