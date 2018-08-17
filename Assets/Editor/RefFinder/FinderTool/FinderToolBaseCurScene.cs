@@ -47,6 +47,21 @@ public abstract class FinderToolBaseCurScene : FinderToolBase
     }
 
     /// <summary>
+    /// 获得打开的场景
+    /// </summary>
+    /// <returns></returns>
+    protected List<UnityEngine.SceneManagement.Scene> GetOpenScenes()
+    {
+        List<UnityEngine.SceneManagement.Scene> ret = new List<UnityEngine.SceneManagement.Scene>();
+        for (int i = 0, imax = SceneManager.sceneCount; i < imax; i++)
+        {
+            UnityEngine.SceneManagement.Scene s = SceneManager.GetSceneAt(i);
+            ret.Add(s);
+        }
+        return ret;
+    }
+
+    /// <summary>
     /// 当前场景激活的根对象
     /// </summary>
     /// <returns></returns>

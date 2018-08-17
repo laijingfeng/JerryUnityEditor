@@ -60,7 +60,7 @@ public class FinderViewPath : FinderViewBase
 
         if (findPath.Equals("Assets"))
         {
-            if(EditorUtility.DisplayDialog("提示", "确定查找Assets目录？可能比较费时", "确定"))
+            if (EditorUtility.DisplayDialog("提示", "确定查找Assets目录？可能比较费时", "确定", "取消"))
             {
                 return WorkMore();
             }

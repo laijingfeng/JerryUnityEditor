@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text.RegularExpressions;
 using UnityEditor;
+using UnityEngine;
 
 public abstract class FinderToolBaseObject : FinderToolBase
 {
@@ -55,12 +56,13 @@ public abstract class FinderToolBaseObject : FinderToolBase
     /// <param name="findObject"></param>
     /// <param name="targetObject"></param>
     /// <returns></returns>
-    protected List<UnityEngine.Object> DoOneObjectByGUID(UnityEngine.Object findObject, UnityEngine.Object targetObject)
+    public static List<UnityEngine.Object> DoOneObjectByGUID(UnityEngine.Object findObject, UnityEngine.Object targetObject)
     {
         List<UnityEngine.Object> ret = new List<UnityEngine.Object>();
         string findObjectPath = AssetDatabase.GetAssetPath(findObject);
         string findObjectGuid = AssetDatabase.AssetPathToGUID(findObjectPath);
         string targetObjectPath = AssetDatabase.GetAssetPath(targetObject);
+        
         if (Regex.IsMatch(File.ReadAllText(targetObjectPath), findObjectGuid))
         {
             ret.Add(targetObject);

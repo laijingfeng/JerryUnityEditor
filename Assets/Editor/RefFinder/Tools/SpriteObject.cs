@@ -3,12 +3,12 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SpriteObject : FinderToolBaseObject
+public partial class SpriteObject : FinderToolBaseObject
 {
     protected override string GetSupportInfoExt()
     {
         string ext = "目标对象是场景时，预设里引用的将无法查找，建议用从当前场景查找"
-            + "\n检查组件:Image|SpriteRenderer。\n特别提醒自定义脚本里引用的无法查找";
+            + GetSupportComponentsInfo();
         if (string.IsNullOrEmpty(base.GetSupportInfoExt()))
         {
             return ext;
@@ -16,10 +16,31 @@ public class SpriteObject : FinderToolBaseObject
         return string.Format("{0},{1}", base.GetSupportInfoExt(), ext);
     }
 
+    public static string GetSupportComponentsInfo()
+    {
+        List<string> des = new List<string>()
+        {
+            "Image",
+            "SpriteRenderer",
+        };
+        DoMoreComponentsDes(ref des);
+        string ret = "";
+        foreach (string r in des)
+        {
+            if (!string.IsNullOrEmpty(ret))
+            {
+                ret += "|";
+            }
+            ret += r;
+        }
+        ret = string.Format("\n检查组件:{0}。\n提醒自定义脚本可在SpriteObjectExt实现", ret);
+        return ret;
+    }
+
     protected override void WorkObject(Object findObject, Object targetObject)
     {
         FinderToolMgrBase.AssetType type = FinderToolMgrBase.Object2Type(targetObject);
-        
+
         switch (type)
         {
             case FinderToolMgrBase.AssetType.GameObject:
@@ -56,7 +77,7 @@ public class SpriteObject : FinderToolBaseObject
                 ret.Add(im);
             }
         }
-        
+
         foreach (SpriteRenderer sr in srs)
         {
             if (sr == null || sr.sprite == null || sr.sprite.name.Equals(spriteName) == false)
@@ -69,6 +90,22 @@ public class SpriteObject : FinderToolBaseObject
             }
         }
 
+        DoMoreComponents(findObject, targetGo, ref ret);
+
         return ret;
     }
+
+    /// <summary>
+    /// 扩展脚本
+    /// </summary>
+    /// <param name="findObject"></param>
+    /// <param name="targetGo"></param>
+    /// <param name="ret"></param>
+    static partial void DoMoreComponents(Object findObject, GameObject targetGo, ref List<Object> ret);
+
+    /// <summary>
+    /// 扩展脚本描述
+    /// </summary>
+    /// <param name="des"></param>
+    static partial void DoMoreComponentsDes(ref List<string> des);
 }

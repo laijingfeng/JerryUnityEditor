@@ -6,7 +6,7 @@ public class SpriteCurScene : FinderToolBaseCurScene
 {
     protected override string GetSupportInfoExt()
     {
-        string ext = "检查组件:Image|SpriteRenderer。\n特别提醒自定义脚本里引用的无法查找";
+        string ext = SpriteObject.GetSupportComponentsInfo();
         if (string.IsNullOrEmpty(base.GetSupportInfoExt()))
         {
             return ext;
