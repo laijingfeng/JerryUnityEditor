@@ -6,7 +6,12 @@ public abstract class FinderToolBasePath : FinderToolBase
 {
     protected override string GetSupportInfoExt()
     {
-        return "使用GUID匹配查找";
+        string ext = "默认使用GUID匹配查找";
+        if (string.IsNullOrEmpty(base.GetSupportInfoExt()))
+        {
+            return ext;
+        }
+        return string.Format("{0},{1}", base.GetSupportInfoExt(), ext);
     }
 
     public override void Work(params object[] param)

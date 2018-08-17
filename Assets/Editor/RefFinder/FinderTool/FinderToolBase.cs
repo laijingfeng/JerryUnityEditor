@@ -38,7 +38,7 @@ public abstract class FinderToolBase
     /// <returns></returns>
     protected virtual string GetSupportInfoExt()
     {
-        return "无";
+        return "";
     }
 
     public abstract void Work(params object[] param);

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,7 +10,12 @@ public abstract class FinderToolBaseCurScene : FinderToolBase
 {
     protected override string GetSupportInfoExt()
     {
-        return "将查找场景里的每一个GameObject";
+        string ext = "将查找场景里的每一个GameObject";
+        if (string.IsNullOrEmpty(base.GetSupportInfoExt()))
+        {
+            return ext;
+        }
+        return string.Format("{0},{1}", base.GetSupportInfoExt(), ext);
     }
 
     public override void Work(params object[] param)

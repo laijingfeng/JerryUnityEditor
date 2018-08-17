@@ -5,6 +5,17 @@ using UnityEngine.UI;
 
 public class FontObject : FinderToolBaseObject
 {
+    protected override string GetSupportInfoExt()
+    {
+        string ext = "目标对象是场景时，预设里引用的将无法查找，建议用从当前场景查找"
+            + "\n检查组件:Text";
+        if (string.IsNullOrEmpty(base.GetSupportInfoExt()))
+        {
+            return ext;
+        }
+        return string.Format("{0},{1}", base.GetSupportInfoExt(), ext);
+    }
+
     protected override void WorkObject(UnityEngine.Object findObject, UnityEngine.Object targetObject)
     {
         FinderToolMgrBase.AssetType type = FinderToolMgrBase.Object2Type(targetObject);
@@ -32,7 +43,6 @@ public class FontObject : FinderToolBaseObject
     /// <returns></returns>
     public static List<UnityEngine.Object> DoOneGameObject(UnityEngine.Object findObject, GameObject targetGo)
     {
-        string findObjectType = findObject.name.ToString();
         Text[] texts = targetGo.GetComponentsInChildren<Text>(true);
         List<UnityEngine.Object> ret = new List<UnityEngine.Object>();
 
@@ -42,7 +52,7 @@ public class FontObject : FinderToolBaseObject
             {
                 continue;
             }
-            if(text.font == findObject)
+            if (text.font == findObject)
             {
                 ret.Add(text);
             }

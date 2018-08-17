@@ -211,7 +211,7 @@ public abstract class FinderToolMgrBase
         /// </summary>
         GameObject,
         /// <summary>
-        /// 模型(UnityEngine.GameObject/.fbx)
+        /// 模型(UnityEngine.GameObject/.fbx|.FBX)
         /// </summary>
         Fbx,
         /// <summary>
@@ -234,6 +234,10 @@ public abstract class FinderToolMgrBase
         /// 脚本(UnityEditor.MonoScript/.cs)
         /// </summary>
         MonoScript,
+        /// <summary>
+        /// 字体(UnityEngine.Font/.TTF|.ttf)
+        /// </summary>
+        Font,
     }
 
     /// <summary>
@@ -300,6 +304,20 @@ public abstract class FinderToolMgrBase
             sysType = typeof(UnityEditor.MonoScript),
             extension=".cs",
             chineseShortName="脚本"
+        },
+        new AssetTypeDes()
+        {
+            type = AssetType.Font,
+            sysType = typeof(UnityEngine.Font),
+            extension=".ttf",
+            chineseShortName="字体"
+        },
+        new AssetTypeDes()
+        {
+            type = AssetType.Font,
+            sysType = typeof(UnityEngine.Font),
+            extension=".TTF",
+            chineseShortName="字体"
         },
     };
 

@@ -58,6 +58,25 @@ public class FinderViewPath : FinderViewBase
             return false;
         }
 
+        if (findPath.Equals("Assets"))
+        {
+            if(EditorUtility.DisplayDialog("提示", "确定查找Assets目录？可能比较费时", "确定"))
+            {
+                return WorkMore();
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return WorkMore();
+        }
+    }
+
+    private bool WorkMore()
+    {
         bool match = false;
         foreach (FinderToolMgrBase mgr in RefFinder.finderMgrList)
         {
