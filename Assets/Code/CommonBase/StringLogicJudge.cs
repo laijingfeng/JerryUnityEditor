@@ -21,6 +21,11 @@ public class StringLogicJudge
         {
             return true;
         }
+
+        //路径处理
+        checkStr = checkStr.Replace('\\', '/');
+        checkStr = checkStr.Replace("//", "/");
+
         //换行符号去掉
         //空格不能去掉，空格可能是资源命名的空格
         filter = filter.Replace("\n", "");
