@@ -1,13 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-//version: 2018-08-08 14:26:51
+//version: 2018-08-18 21:44:08
 
 /// <summary>
 /// 字符串逻辑运算
 /// </summary>
 public class StringLogicJudge
 {
+    /// <summary>
+    /// 判断是否通过
+    /// </summary>
+    /// <param name="checkStr">待检查的串</param>
+    /// <param name="filter">过滤规则</param>
+    /// <returns></returns>
     static public bool Judge(string checkStr, string filter)
     {
         if (string.IsNullOrEmpty(checkStr)
@@ -29,37 +35,52 @@ public class StringLogicJudge
 
     #region 查找
 
+    /// <summary>
+    /// 是否通过
+    /// </summary>
+    /// <param name="checkStr">待检查的串</param>
+    /// <param name="filter">过滤规则</param>
+    /// <returns></returns>
     static private bool DoSearch(string checkStr, string filter)
     {
         List<string> ret = GetOneLogicPiece(filter);
 
-        //一个逻辑语句，下面两种情况
+        //调试
+        //string str = "";
+        //foreach (string s in ret)
+        //{
+        //    str += "【" + s + "】";
+        //}
+        //UnityEngine.Debug.LogError(filter + "\n" + str);
+
+        //一个正常逻辑语句，下面两种情况
         //1.带符号:a&b
         //2.不带符号:a
-        if (ret == null || (ret.Count != 1 && ret.Count != 3))
+        if (ret == null || (ret.Count != 0 && ret.Count != 1 && ret.Count != 3))
         {
             UnityEngine.Debug.LogError("[StringLogicJudge]过滤串错误:" + filter);
             return false;
         }
 
-        //debug
-        //foreach (string s in ret)
-        //{
-        //    Debug.LogWarning(filter + ":" + s);
-        //}
-
-        if (ret.Count == 1)
+        //空串
+        if (ret.Count == 0)
+        {
+            return true;
+        }
+        else if (ret.Count == 1)
         {
             return JudgeOne(checkStr, ret[0]);
         }
-
-        if (ret[1] == "&")
-        {
-            return DoSearch(checkStr, ret[0]) && DoSearch(checkStr, ret[2]);
-        }
         else
         {
-            return DoSearch(checkStr, ret[0]) || DoSearch(checkStr, ret[2]);
+            if (ret[1] == "&")
+            {
+                return DoSearch(checkStr, ret[0]) && DoSearch(checkStr, ret[2]);
+            }
+            else
+            {
+                return DoSearch(checkStr, ret[0]) || DoSearch(checkStr, ret[2]);
+            }
         }
     }
 
@@ -67,21 +88,14 @@ public class StringLogicJudge
     {
         if (string.IsNullOrEmpty(filter))
         {
-            UnityEngine.Debug.LogError("filter error:" + filter);
-            return false;
-        }
-
-        filter = filter.Replace("(", "").Replace(")", "");
-        if (filter.Length <= 0)
-        {
-            return false;
+            return true;
         }
 
         if (filter[0] == '!')
         {
             if (filter.Length > 1)
             {
-                return !checkStr.Contains(filter.Substring(1));
+                return !DoSearch(checkStr, filter.Substring(1));
             }
             else
             {
@@ -92,6 +106,38 @@ public class StringLogicJudge
         {
             return checkStr.Contains(filter);
         }
+    }
+
+    /// <summary>
+    /// chs从s到e，括号匹配是否通过
+    /// </summary>
+    /// <param name="s"></param>
+    /// <param name="e"></param>
+    /// <param name="chs"></param>
+    /// <returns></returns>
+    static private bool MatchBrackets(int s, int e, ref char[] chs)
+    {
+        int cnt = 0;
+        for (int i = s; i <= e; i++)
+        {
+            if (chs[i] == '(')
+            {
+                cnt++;
+            }
+            else if (chs[i] == ')')
+            {
+                cnt--;
+                if (cnt < 0)
+                {
+                    return false;
+                }
+            }
+        }
+        if (cnt == 0)
+        {
+            return true;
+        }
+        return false;
     }
 
     /// <summary>
@@ -107,11 +153,10 @@ public class StringLogicJudge
             return ret;
         }
         char[] chs = filter.ToCharArray();
-        int cnt = 0;//括号匹配
         int s = 0;//开始下标
         int e = chs.Length - 1;//结束下标
 
-        //去除最外层的括号
+        //去除最外层的无意义括号，判定方式是：去掉头尾，还符合括号匹配
         while (true)
         {
             if (s >= e)
@@ -119,7 +164,8 @@ public class StringLogicJudge
                 break;
             }
 
-            if (chs[s] == '(' && chs[e] == ')')
+            if (chs[s] == '(' && chs[e] == ')'
+                && MatchBrackets(s + 1, e - 1, ref chs))
             {
                 s++;
                 e--;
@@ -130,8 +176,9 @@ public class StringLogicJudge
             }
         }
 
+        //寻找第一个断点
+        int cnt = 0;//括号匹配
         int idx = s;
-
         for (int i = s; i <= e; i++)
         {
             if (chs[i] == '(')
