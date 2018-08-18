@@ -94,6 +94,10 @@ public class AutoBundleRule
         {
             return false;
         }
+        if (!this.m_UseBundleElse)
+        {
+            return false;
+        }
         if (importer == null)
         {
             return false;
