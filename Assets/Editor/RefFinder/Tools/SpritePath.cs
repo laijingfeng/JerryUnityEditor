@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
@@ -40,50 +39,33 @@ public class SpritePath : FinderToolBasePath
         }
 
         string findPathAbs = Application.dataPath + "/../" + findPath;
-        string[] files = Directory.GetFiles(findPathAbs, "*.*", SearchOption.AllDirectories)
-            .Where(s => IsMyCarrier(s)).ToArray();
-
         bool hasDoReplace = false;
+        string findObjectGuid = AssetDatabase.AssetPathToGUID(findObjectPath);
 
-        if (files != null && files.Length > 0)
+        DoWorkPath(findPathAbs, (filePath) =>
         {
-            int startIndex = 0;
-            string findObjectGuid = AssetDatabase.AssetPathToGUID(findObjectPath);
-
-            EditorApplication.update = delegate()
+            if (Regex.IsMatch(File.ReadAllText(filePath), @"m_Sprite: {fileID: " + spriteID + ", guid: " + findObjectGuid + ", type: 3}"))
             {
-                string file = files[startIndex];
-                bool isCancel = EditorUtility.DisplayCancelableProgressBar("匹配资源中", file, (float)startIndex / (float)files.Length);
-                if (Regex.IsMatch(File.ReadAllText(file), @"m_Sprite: {fileID: " + spriteID + ", guid: " + findObjectGuid + ", type: 3}"))
+                //要替换
+                if (!string.IsNullOrEmpty(newObjectGuid)
+                     && !string.IsNullOrEmpty(newSpriteID))
                 {
-                    //要替换
-                    if (!string.IsNullOrEmpty(newObjectGuid)
-                        && !string.IsNullOrEmpty(newSpriteID))
-                    {
-                        string newFile = File.ReadAllText(file)
-                            .Replace(@"m_Sprite: {fileID: " + spriteID + ", guid: " + findObjectGuid + ", type: 3}", @"m_Sprite: {fileID: " + newSpriteID + ", guid: " + newObjectGuid + ", type: 3}");
-                        File.WriteAllText(file, newFile);
-                        hasDoReplace = true;
-                    }
-
-                    results.Add(AssetDatabase.LoadMainAssetAtPath(GetRelativeAssetsPath(file)));
+                    string newFile = File.ReadAllText(filePath)
+                        .Replace(@"m_Sprite: {fileID: " + spriteID + ", guid: " + findObjectGuid + ", type: 3}", @"m_Sprite: {fileID: " + newSpriteID + ", guid: " + newObjectGuid + ", type: 3}");
+                    File.WriteAllText(filePath, newFile);
+                    hasDoReplace = true;
                 }
-                startIndex++;
-                if (isCancel || startIndex >= files.Length)
-                {
-                    EditorUtility.ClearProgressBar();
-                    EditorApplication.update = null;
-                    startIndex = 0;
-                    SetTip(string.Format("查找结果如下({0}):", results.Count), MessageType.Info);
 
-                    if (hasDoReplace)
-                    {
-                        AssetDatabase.SaveAssets();
-                        AssetDatabase.Refresh();
-                    }
-                }
-            };
-            SetTip(string.Format("查找结果如下({0}):", results.Count), MessageType.Info);
-        }
+                results.Add(AssetDatabase.LoadMainAssetAtPath(GetRelativeAssetsPath(filePath)));
+            }
+        },
+        () =>
+        {
+            if (hasDoReplace)
+            {
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+            }
+        });
     }
 }

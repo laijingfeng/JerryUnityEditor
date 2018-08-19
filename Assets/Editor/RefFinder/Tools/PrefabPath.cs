@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
@@ -18,55 +17,40 @@ public class PrefabPath : FinderToolBasePath
             newObjectGuid = AssetDatabase.AssetPathToGUID(newObjectPath);
             newObjectFileId = GetFileID(newObject);
         }
-        
+
         string findObjectPath = AssetDatabase.GetAssetPath(findObject);
         string findObjectFileId = GetFileID(findObject);
 
         string findPathAbs = Application.dataPath + "/../" + findPath;
-        string[] files = Directory.GetFiles(findPathAbs, "*.*", SearchOption.AllDirectories)
-            .Where(s => IsMyCarrier(s)).ToArray();
+        string findObjectGuid = AssetDatabase.AssetPathToGUID(findObjectPath);
 
         bool hasDoReplace = false;
 
-        if (files != null && files.Length > 0)
+        DoWorkPath(findPathAbs, (file) =>
         {
-            int startIndex = 0;
-            string findObjectGuid = AssetDatabase.AssetPathToGUID(findObjectPath);
-
-            EditorApplication.update = delegate()
+            //查找无需太严，要支持Hierarchy
+            if (Regex.IsMatch(File.ReadAllText(file), @", guid: " + findObjectGuid + ", type: 2}"))
             {
-                string file = files[startIndex];
-                bool isCancel = EditorUtility.DisplayCancelableProgressBar("匹配资源中", file, (float)startIndex / (float)files.Length);
-                //查找无需太严，要支持Hierarchy
-                if (Regex.IsMatch(File.ReadAllText(file), @", guid: " + findObjectGuid + ", type: 2}"))
+                //要替换
+                if (!string.IsNullOrEmpty(newObjectGuid))
                 {
-                    //要替换
-                    if (!string.IsNullOrEmpty(newObjectGuid))
-                    {
-                        string newFile = File.ReadAllText(file)
-                            .Replace(@"prefab: {fileID: " + findObjectFileId + ", guid: " + findObjectGuid + ", type: 2}", @"prefab: {fileID: " + newObjectFileId + ", guid: " + newObjectGuid + ", type: 2}");
-                        File.WriteAllText(file, newFile);
-                        hasDoReplace = true;
-                    }
-
-                    results.Add(AssetDatabase.LoadMainAssetAtPath(GetRelativeAssetsPath(file)));
+                    string newFile = File.ReadAllText(file)
+                        .Replace(@"prefab: {fileID: " + findObjectFileId + ", guid: " + findObjectGuid + ", type: 2}", @"prefab: {fileID: " + newObjectFileId + ", guid: " + newObjectGuid + ", type: 2}");
+                    File.WriteAllText(file, newFile);
+                    hasDoReplace = true;
                 }
-                startIndex++;
-                if (isCancel || startIndex >= files.Length)
-                {
-                    EditorUtility.ClearProgressBar();
-                    EditorApplication.update = null;
-                    startIndex = 0;
-                    SetTip(string.Format("查找结果如下({0}):", results.Count), MessageType.Info);
 
-                    if (hasDoReplace)
-                    {
-                        AssetDatabase.SaveAssets();
-                        AssetDatabase.Refresh();
-                    }
-                }
-            };
-            SetTip(string.Format("查找结果如下({0}):", results.Count), MessageType.Info);
+                results.Add(AssetDatabase.LoadMainAssetAtPath(GetRelativeAssetsPath(file)));
+            }
         }
+        ,
+        () =>
+        {
+            if (hasDoReplace)
+            {
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+            }
+        });
     }
 }

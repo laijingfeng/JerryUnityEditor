@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
-public class MaterialPath : FinderToolBasePath
+public class AnimatorControllerPath : FinderToolBasePath
 {
     protected override string GetSupportInfoExt()
     {
@@ -15,15 +15,15 @@ public class MaterialPath : FinderToolBasePath
         return string.Format("{0},{1}", base.GetSupportInfoExt(), ext);
     }
 
-    protected override void WorkPath(Object findObject, string findPath, Object newObject)
+    protected override void WorkPath(UnityEngine.Object findObject, string findPath, UnityEngine.Object newObject)
     {
         string findObjectPath = AssetDatabase.GetAssetPath(findObject);
-        string findPathAbs = Application.dataPath + "/../" + findPath;
         string findObjectGuid = AssetDatabase.AssetPathToGUID(findObjectPath);
+        string findPathAbs = Application.dataPath + "/../" + findPath;
 
         DoWorkPath(findPathAbs, (filePath) =>
         {
-            Object fileObj = AssetDatabase.LoadAssetAtPath<Object>(EditorUtil.PathAbsolute2Assets(filePath));
+            UnityEngine.Object fileObj = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(EditorUtil.PathAbsolute2Assets(filePath));
             bool useRegex = true;
             if (fileObj != null)
             {
@@ -32,7 +32,7 @@ public class MaterialPath : FinderToolBasePath
                     || type == FinderToolMgrBase.AssetType.Fbx)
                 {
                     useRegex = false;
-                    results.AddRange(MaterialObject.DoOneGameObject(findObject, fileObj as GameObject));
+                    results.AddRange(AnimatorControllerObject.DoOneGameObject(findObject, fileObj as GameObject));
                 }
             }
 

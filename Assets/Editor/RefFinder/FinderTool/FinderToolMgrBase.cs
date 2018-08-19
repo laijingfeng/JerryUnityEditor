@@ -108,7 +108,7 @@ public abstract class FinderToolMgrBase
     public static string Object2TypeDes(Object obj)
     {
         AssetType type = FinderToolMgrBase.Object2Type(obj);
-        if(type == AssetType.Unknow)
+        if (type == AssetType.Unknow)
         {
             return string.Format("{0}[{1}]", obj.GetType().ToString(), "未知");
         }
@@ -238,6 +238,10 @@ public abstract class FinderToolMgrBase
         /// 字体(UnityEngine.Font/.TTF|.ttf)
         /// </summary>
         Font,
+        /// <summary>
+        /// 动画控制器(UnityEditor.Animations.AnimatorController/.controller)
+        /// </summary>
+        AnimatorController,
     }
 
     /// <summary>
@@ -249,22 +253,22 @@ public abstract class FinderToolMgrBase
         {
             type = AssetType.GameObject,
             sysType = typeof(UnityEngine.GameObject),
-            extension=".prefab",
-            chineseShortName="预设"
+            extension = ".prefab",
+            chineseShortName = "预设"
         },
         new AssetTypeDes()
         {
             type = AssetType.Fbx,
             sysType = typeof(UnityEngine.GameObject),
-            extension=".fbx",
-            chineseShortName="模型"
+            extension = ".fbx",
+            chineseShortName = "模型"
         },
         new AssetTypeDes()
         {
             type = AssetType.Fbx,
             sysType = typeof(UnityEngine.GameObject),
-            extension=".FBX",
-            chineseShortName="模型"
+            extension = ".FBX",
+            chineseShortName = "模型"
         },
         new AssetTypeDes()
         {
@@ -274,15 +278,15 @@ public abstract class FinderToolMgrBase
 #else
             sysType = typeof(UnityEngine.Object),
 #endif
-            extension=".unity",
-            chineseShortName="场景"
+            extension = ".unity",
+            chineseShortName = "场景"
         },
         new AssetTypeDes()
         {
             type = AssetType.Sprite,
             sysType = typeof(UnityEngine.Sprite),
-            extension=".png",
-            chineseShortName="精灵"
+            extension = ".png",
+            chineseShortName = "精灵"
         },
         new AssetTypeDes()
         {
@@ -295,29 +299,36 @@ public abstract class FinderToolMgrBase
         {
             type = AssetType.Material,
             sysType = typeof(UnityEngine.Material),
-            extension=".mat",
-            chineseShortName="材质"
+            extension = ".mat",
+            chineseShortName = "材质"
         },
         new AssetTypeDes()
         {
             type = AssetType.MonoScript,
             sysType = typeof(UnityEditor.MonoScript),
-            extension=".cs",
-            chineseShortName="脚本"
+            extension = ".cs",
+            chineseShortName = "脚本"
         },
         new AssetTypeDes()
         {
             type = AssetType.Font,
             sysType = typeof(UnityEngine.Font),
-            extension=".ttf",
-            chineseShortName="字体"
+            extension = ".ttf",
+            chineseShortName = "字体"
         },
         new AssetTypeDes()
         {
             type = AssetType.Font,
             sysType = typeof(UnityEngine.Font),
-            extension=".TTF",
-            chineseShortName="字体"
+            extension = ".TTF",
+            chineseShortName = "字体"
+        },
+        new AssetTypeDes()
+        {
+            type = AssetType.AnimatorController,
+            sysType = typeof(UnityEditor.Animations.AnimatorController),
+            extension = ".controller",
+            chineseShortName = "动画控制器"
         },
     };
 

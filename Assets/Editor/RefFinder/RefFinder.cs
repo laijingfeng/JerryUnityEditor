@@ -45,6 +45,7 @@ public class RefFinder : EditorWindow
         new MaterialMgr(),
         new FontMgr(),
         new ShaderMgr(),
+        new AnimatorControllerMgr(),
     };
 
     void OnGUI()

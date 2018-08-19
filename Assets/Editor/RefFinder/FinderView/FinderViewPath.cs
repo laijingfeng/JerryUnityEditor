@@ -58,25 +58,6 @@ public class FinderViewPath : FinderViewBase
             return false;
         }
 
-        if (findPath.Equals("Assets"))
-        {
-            if (EditorUtility.DisplayDialog("提示", "确定查找Assets目录？可能比较费时", "确定", "取消"))
-            {
-                return WorkMore();
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else
-        {
-            return WorkMore();
-        }
-    }
-
-    private bool WorkMore()
-    {
         bool match = false;
         foreach (FinderToolMgrBase mgr in RefFinder.finderMgrList)
         {
@@ -100,6 +81,7 @@ public class FinderViewPath : FinderViewBase
         if (!match)
         {
             SetTip(string.Format("查找对象{0}是不支持的类型", findObject.GetType()), MessageType.Warning);
+            return false;
         }
 
         return true;
