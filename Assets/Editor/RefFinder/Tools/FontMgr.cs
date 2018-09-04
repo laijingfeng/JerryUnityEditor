@@ -15,7 +15,7 @@ public class FontMgr : FinderToolMgrBase
 
     protected override FinderToolBase GetToolPath()
     {
-        return new Common_GuidPath();
+        return new FontPath();
     }
 
     protected override FinderToolBase GetToolObject()
