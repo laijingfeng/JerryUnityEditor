@@ -1,12 +1,44 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using UnityEditor;
 using UnityEngine;
 
-//version: 2018-08-13 13:41:57
+//version: 2018-09-13 22:26:11
 
 public class EditorUtil
 {
+    public static void SetScriptingDefineSymbols(BuildTargetGroup target, string symbol, bool add = true)
+    {
+        string val = PlayerSettings.GetScriptingDefineSymbolsForGroup(target);
+        List<string> vals = new List<string>(val.Split(';'));
+        if (add)
+        {
+            if (!vals.Contains(symbol))
+            {
+                vals.Add(symbol);
+            }
+        }
+        else
+        {
+            if (vals.Contains(symbol))
+            {
+                vals.Remove(symbol);
+            }
+        }
+
+        val = string.Empty;
+        foreach (string v in vals)
+        {
+            if (!string.IsNullOrEmpty(val))
+            {
+                val += ";";
+            }
+            val += v;
+        }
+        PlayerSettings.SetScriptingDefineSymbolsForGroup(target, val);
+    }
+
     public static string Vector3String(Vector3 v)
     {
         return string.Format("({0},{1},{2})", v.x, v.y, v.z);
