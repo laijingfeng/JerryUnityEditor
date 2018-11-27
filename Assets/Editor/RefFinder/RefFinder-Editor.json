@@ -1,9 +1,0 @@
-{
-	"version": "2018-09-04-00",
-	"dependencies":[
-		"CommonBase.dll",
-		"UnityEditor.dll",
-		"UnityEngine.dll",
-		"UnityEngine.UI.dll"
-	]
-}
